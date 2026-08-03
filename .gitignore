@@ -1,8 +1,6 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
+# Dependencies
+node_modules/
+.pnp
 .pnp.*
 .yarn/*
 !.yarn/patches
@@ -10,53 +8,46 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-/vitest-test-results
+# Next.js / build
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+next-env.d.ts
 
-# next.js
-/.next/
-/out/
+# Environment & secrets (never commit)
+.env
+.env.*
+!.env.example
 
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-Thumbs.db
-
-# debug
+# Debug / logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# local env files
-.env*.local
+# OS / editor
+.DS_Store
+Thumbs.db
+*.pem
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
 
-# Sentry Config File
-.env.sentry-build-plugin
-
-# local folder
-local
-
-# vercel
+# Vercel / local
 .vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-# Database
+local/
 *.db
 
-# storybook
-storybook-static
-*storybook.log
-build-archive.log
+# Test / coverage artifacts
+coverage/
+test-results/
+playwright-report/
+playwright/.cache/
+vitest-test-results/
 
-# playwright
-/test-results/
-/playwright-report/
-/playwright/.cache/
+# Docker / misc
+*.log

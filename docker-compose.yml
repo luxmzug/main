@@ -1,0 +1,7 @@
+services:
+  web:
+    build: .
+    container_name: luxusumzug-web
+    restart: unless-stopped
+    ports:
+      - '2009:80'

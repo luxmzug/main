@@ -1,3 +1,88 @@
-@layer theme, base, clerk, components, utilities; /* Ensure Clerk is compatible with Tailwind CSS v4 */
-
 @import 'tailwindcss';
+
+@theme {
+  --color-ink: #12110f;
+  --color-ink-soft: #1c1b18;
+  --color-paper: #f3efe6;
+  --color-paper-muted: #d9d2c5;
+  --color-brass: #b08d57;
+  --color-brass-bright: #d4b483;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-ink text-paper antialiased;
+    font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-brass) 45%, transparent);
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.9s ease-out both;
+  }
+
+  .animate-hero-zoom {
+    animation: hero-zoom 18s ease-out both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.08);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+@layer components {
+  .prose-blog {
+    @apply mx-auto max-w-3xl text-lg leading-relaxed text-paper-muted;
+  }
+
+  .prose-blog h2 {
+    @apply mt-12 mb-4 font-normal text-3xl text-paper;
+    font-family: var(--font-display), Georgia, serif;
+  }
+
+  .prose-blog p {
+    @apply mb-5;
+  }
+
+  .prose-blog ul {
+    @apply mb-5 list-disc space-y-2 pl-6;
+  }
+
+  .prose-blog ol {
+    @apply mb-5 list-decimal space-y-2 pl-6;
+  }
+
+  .prose-blog strong {
+    @apply font-semibold text-paper;
+  }
+
+  .prose-blog a {
+    @apply text-brass-bright underline underline-offset-4 transition hover:text-brass;
+  }
+}
