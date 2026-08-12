@@ -1,13 +1,26 @@
 import type { Metadata } from 'next';
-import { PostCard } from '@/components/PostCard';
+import { JsonLd } from '@/components/JsonLd';
 import { PageHero } from '@/components/PageHero';
+import { PostCard } from '@/components/PostCard';
 import { getAllPosts } from '@/lib/posts';
+import { buildBlogIndexJsonLd } from '@/lib/seo';
+import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Ratgeber & Blog',
+  title: 'Ratgeber & Blog für Umzug in Wien',
   description:
-    'Alle Ratgeber von Luxusumzug: Umzugsplanung, Möbeltransport, Kosten, Checklisten und mehr für Wien und Österreich.',
+    'Alle Luxusumzug-Ratgeber im Überblick: Planung, Möbeltransport, Kosten, Checklisten, Relocation und mehr für Wien und Österreich.',
+  keywords: [...siteConfig.keywords, 'Umzug Ratgeber', 'Umzug Blog Wien'],
   alternates: { canonical: '/blog/' },
+  openGraph: {
+    title: 'Ratgeber & Blog | Luxusumzug',
+    description:
+      'Alle Ratgeber von Luxusumzug: Planung, Transport, Kosten und Checklisten für hochwertige Umzüge.',
+    url: `${siteConfig.url}/blog/`,
+    type: 'website',
+    locale: siteConfig.ogLocale,
+    images: [{ url: siteConfig.ogImage, width: 1200, height: 630, alt: 'Luxusumzug Ratgeber' }],
+  },
 };
 
 export default function BlogIndexPage() {
@@ -15,6 +28,7 @@ export default function BlogIndexPage() {
 
   return (
     <>
+      <JsonLd data={buildBlogIndexJsonLd(posts)} />
       <PageHero
         breadcrumb="Ratgeber"
         description="Hier finden Sie alle aktuellen Beiträge – von der Planung bis zum sicheren Transport."

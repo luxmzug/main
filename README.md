@@ -42,7 +42,7 @@ Site: [http://localhost:2009](http://localhost:2009)
 
 ## Hero image
 
-Replace `public/images/hero-header.jpg` with your own header photo (recommended ~2000px wide). Keep the same filename.
+Replace `public/images/hero-header.webp` with your own header photo (recommended ~2000px wide). Keep the same filename.
 
 Add posts as `.mdx` files in `content/blog/` with frontmatter:
 

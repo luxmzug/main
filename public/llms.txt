@@ -1,0 +1,20 @@
+# luxusumzug.at – Kurzüberblick für KI-Assistenten
+
+> Premium-Umzugsratgeber für Wien und Österreich (Sprache: de-AT).
+
+## Website
+- URL: https://luxusumzug.at
+- Kontakt: kontakt@luxusumzug.at
+
+## Wichtige Seiten
+- / – Startseite
+- /blog/ – alle Ratgeber
+- /umzugsplanung/
+- /moebeltransport/
+- /kosten/
+- /checklisten/
+- /ueber-uns/
+- /kontakt/
+
+## Inhalte
+MDX-Artikel unter content/blog/ zu Kunsttransport, Relocation, Weinkeller, Halteverbotszone und Smart-Home-Umzug.

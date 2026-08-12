@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { siteConfig } from '@/lib/site';
+import { navItems, siteConfig } from '@/lib/site';
 
 export const SiteFooter = () => {
   return (
@@ -11,7 +11,7 @@ export const SiteFooter = () => {
           clipPath: 'ellipse(70% 100% at 50% 0%)',
         }}
       />
-      <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-16 md:grid-cols-[1.1fr_auto_1.2fr] md:items-center md:px-6 md:py-20 lg:px-8">
+      <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1.1fr_1fr_1.1fr] md:items-start md:px-6 md:py-20 lg:px-8">
         <div className="flex items-start gap-4">
           <span className="mt-1 flex size-12 items-center justify-center rounded-full bg-gold/15 ring-1 ring-gold/40">
             <svg aria-hidden="true" className="size-6 text-gold" fill="none" viewBox="0 0 24 24">
@@ -29,15 +29,29 @@ export const SiteFooter = () => {
             <p className="mt-2 text-sm text-white/70">
               © {new Date().getFullYear()} {siteConfig.legalName}
             </p>
+            <a className="mt-3 inline-block text-sm text-gold hover:text-gold-light" href={`mailto:${siteConfig.email}`}>
+              {siteConfig.email}
+            </a>
           </div>
         </div>
 
-        <div aria-hidden="true" className="hidden h-16 w-px bg-gold/50 md:block" />
+        <nav aria-label="Footer Navigation">
+          <p className="mb-3 text-xs tracking-[0.16em] text-gold uppercase">Navigation</p>
+          <ul className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-white/85">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link className="transition hover:text-gold" href={item.href}>
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
 
-        <div className="md:pl-2">
+        <div>
           <p className="max-w-xl text-sm leading-relaxed text-white/85 md:text-base">
             <strong className="text-gold">{siteConfig.name.toUpperCase()}</strong> – der Ratgeber für
-            hochwertige, sichere und stressfreie Übersiedlungen.
+            hochwertige, sichere und stressfreie Übersiedlungen in Wien und Österreich.
           </p>
           <Link className="btn-gold mt-6" href="/blog/">
             Jetzt Blog entdecken →

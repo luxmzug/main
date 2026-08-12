@@ -1,74 +1,94 @@
+import type { LucideIcon } from 'lucide-react';
+import {
+  Banknote,
+  Calendar,
+  ClipboardList,
+  Clock,
+  Diamond,
+  Heart,
+  Home,
+  PackageCheck,
+  ShieldCheck,
+  Truck,
+} from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
 
-const acrostic = [
+const iconClassName = 'size-5 shrink-0 text-[#d4af37] md:size-6';
+
+const acrostic: {
+  letter: string;
+  title: string;
+  text: string;
+  Icon: LucideIcon;
+}[] = [
   {
     letter: 'L',
     title: 'Logistik planen',
     text: 'Ein guter Umzug beginnt lange vor dem Transport.',
-    icon: '🚚',
+    Icon: Truck,
   },
   {
     letter: 'U',
     title: 'Umzug stressfrei gestalten',
     text: 'Mit klarer Vorbereitung und realistischen Zeitplänen.',
-    icon: '📅',
+    Icon: Calendar,
   },
   {
     letter: 'X',
     title: 'Extra Schutz für Wertvolles',
     text: 'Hochwertige Möbel, Glas, Technik oder Kunst brauchen besondere Aufmerksamkeit.',
-    icon: '💎',
+    Icon: Diamond,
   },
   {
     letter: 'U',
     title: 'Übersicht behalten',
     text: 'Wer organisiert, spart Zeit, Nerven und vermeidet Chaos.',
-    icon: '📋',
+    Icon: ClipboardList,
   },
   {
     letter: 'S',
     title: 'Sicher transportieren',
     text: 'Vom richtigen Verpackungsmaterial bis zur Ladungssicherung.',
-    icon: '🛡️',
+    Icon: ShieldCheck,
   },
   {
     letter: 'U',
     title: 'Übergabe vorbereiten',
     text: 'Ob alte Wohnung, neues Haus oder Bürofläche – eine saubere Übergabe ist Gold wert.',
-    icon: '🔑',
+    Icon: Home,
   },
   {
     letter: 'M',
     title: 'Möbel schützen',
     text: 'Möbel richtig demontieren, sichern und am neuen Ort sauber aufbauen.',
-    icon: '🛋️',
+    Icon: PackageCheck,
   },
   {
     letter: 'Z',
     title: 'Zeit sparen',
     text: 'Gute Planung verhindert doppelte Wege und unnötige Wartezeiten.',
-    icon: '⏱️',
+    Icon: Clock,
   },
   {
     letter: 'U',
     title: 'Umzugskosten verstehen',
     text: 'Damit Sie die Kosten im Blick behalten.',
-    icon: '💶',
+    Icon: Banknote,
   },
   {
     letter: 'G',
     title: 'Gut ankommen',
     text: 'Am Ende zählt, dass alles angekommen ist und der neue Lebensabschnitt entspannt beginnt.',
-    icon: '🏠',
+    Icon: Heart,
   },
-] as const;
+];
 
-const trustIcons = [
-  { label: 'Premium Umzugsservice', icon: '💎' },
-  { label: 'Sicherer Transport', icon: '🛡️' },
-  { label: 'Zuverlässig & pünktlich', icon: '🚚' },
-  { label: 'Stressfrei ankommen', icon: '❤️' },
-] as const;
+const trustIcons: { label: string; Icon: LucideIcon }[] = [
+  { label: 'Premium Umzugsservice', Icon: Diamond },
+  { label: 'Sicherer Transport', Icon: ShieldCheck },
+  { label: 'Zuverlässig & pünktlich', Icon: Truck },
+  { label: 'Stressfrei ankommen', Icon: Heart },
+];
 
 export const AcrosticSection = () => {
   return (
@@ -79,10 +99,11 @@ export const AcrosticSection = () => {
         <div className="mt-12 grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-start">
           <ul className="space-y-3">
             {acrostic.map((item) => (
-              <li className="card-soft flex items-center gap-3 px-3 py-3 md:gap-4 md:px-4" key={`${item.letter}-${item.title}`}>
-                <span className="text-xl" aria-hidden="true">
-                  {item.icon}
-                </span>
+              <li
+                className="card-soft flex items-center gap-3 px-3 py-3 md:gap-4 md:px-4"
+                key={`${item.letter}-${item.title}`}
+              >
+                <item.Icon aria-hidden="true" className={iconClassName} strokeWidth={1.75} />
                 <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-navy text-lg font-bold text-gold md:size-12 md:text-xl">
                   {item.letter}
                 </span>
@@ -116,10 +137,15 @@ export const AcrosticSection = () => {
 
             <div className="grid grid-cols-2 gap-4">
               {trustIcons.map((item) => (
-                <div className="rounded-xl border border-navy/8 bg-white/70 p-4 text-center" key={item.label}>
-                  <p className="text-2xl" aria-hidden="true">
-                    {item.icon}
-                  </p>
+                <div
+                  className="rounded-xl border border-navy/8 bg-white/70 p-4 text-center"
+                  key={item.label}
+                >
+                  <item.Icon
+                    aria-hidden="true"
+                    className="mx-auto size-6 text-[#d4af37]"
+                    strokeWidth={1.75}
+                  />
                   <p className="mt-2 text-xs font-semibold tracking-wide text-navy uppercase md:text-[13px]">
                     {item.label}
                   </p>

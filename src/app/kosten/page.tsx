@@ -3,9 +3,10 @@ import { ContentPage } from '@/components/ContentPage';
 import { getAllPosts } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Umzugskosten',
+  title: 'Umzugskosten Wien – transparent verstehen',
   description:
-    'Umzugskosten verstehen: welche Faktoren den Preis beeinflussen und wie Sie transparent planen.',
+    'Umzugskosten in Wien verstehen: Wohnfläche, Inventar, Packservice und Genehmigungen – so planen Sie ohne böse Überraschungen.',
+  keywords: ['Umzugskosten Wien', 'Was kostet ein Umzug', 'Umzug Preis', 'Luxusumzug'],
   alternates: { canonical: '/kosten/' },
 };
 
@@ -13,6 +14,7 @@ export default function KostenPage() {
   return (
     <ContentPage
       breadcrumb="Kosten"
+      path="/kosten/"
       bullets={[
         'Wohnfläche, Etage und Zugangssituation',
         'Umfang des Inventars und Sonderstücke',

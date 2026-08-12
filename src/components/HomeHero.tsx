@@ -2,22 +2,22 @@ import Link from 'next/link';
 
 export const HomeHero = () => {
   return (
-    <section className="relative isolate overflow-hidden bg-navy">
-      {/* Hero-Bild: ersetzen Sie public/images/hero-header.jpg durch Ihr eigenes Foto */}
+    <section className="relative isolate min-h-[68vh] overflow-hidden bg-navy md:min-h-[80vh]">
+      {/* Hero image: public/images/hero-header.webp */}
       <img
         alt="Professionelles Umzugsteam bei der Arbeit"
-        className="absolute inset-0 -z-20 size-full object-cover animate-hero-zoom"
+        className="absolute inset-0 -z-20 h-full w-full max-w-none object-cover object-[78%_center] sm:object-[72%_center] md:object-[center_42%]"
         fetchPriority="high"
         height={1200}
-        src="/images/hero-header.jpg"
+        src="/images/hero-header.webp"
         width={2000}
       />
       <div
         aria-hidden="true"
-        className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/92 via-navy/78 to-navy/45"
+        className="absolute inset-0 -z-10 bg-gradient-to-r from-navy/92 via-navy/75 to-navy/40 md:from-navy/88 md:via-navy/55 md:to-navy/15"
       />
 
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-16 md:grid-cols-[1.2fr_0.8fr] md:items-center md:px-6 md:py-24 lg:px-8 lg:py-28">
+      <div className="mx-auto grid h-full min-h-[68vh] max-w-7xl gap-10 px-4 py-16 md:min-h-[80vh] md:grid-cols-[1.15fr_0.85fr] md:items-center md:px-6 md:py-24 lg:max-w-[90rem] lg:px-10 lg:py-28">
         <div className="animate-fade-up">
           <h1
             className="max-w-3xl text-3xl leading-tight text-gold sm:text-4xl md:text-5xl lg:text-[3.25rem]"

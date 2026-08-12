@@ -3,9 +3,10 @@ import { ContentPage } from '@/components/ContentPage';
 import { getAllPosts } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Über uns',
+  title: 'Über Luxusumzug – Ratgeber mit Anspruch',
   description:
-    'Über Luxusumzug: Ratgeber und Orientierung für hochwertige, sichere und stressfreie Übersiedlungen.',
+    'Über Luxusumzug: Orientierung für hochwertige, sichere und stressfreie Übersiedlungen in Wien und Österreich.',
+  keywords: ['Über Luxusumzug', 'Umzug Ratgeber Wien', 'VIP Umzug Österreich'],
   alternates: { canonical: '/ueber-uns/' },
 };
 
@@ -13,6 +14,7 @@ export default function UeberUnsPage() {
   return (
     <ContentPage
       breadcrumb="Über uns"
+      path="/ueber-uns/"
       bullets={[
         'Fokus auf Planung, Schutz und klare Abläufe',
         'Inhalte für anspruchsvolle Privathaushalte',

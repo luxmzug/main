@@ -1,18 +1,43 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { JsonLd } from '@/components/JsonLd';
 import { PageHero } from '@/components/PageHero';
+import {
+  buildBreadcrumbJsonLd,
+  buildWebPageJsonLd,
+} from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Kontakt',
+  title: 'Kontakt – Luxusumzug Anfrage',
   description:
-    'Kontaktieren Sie Luxusumzug für eine diskrete Anfrage zu Planung, Transport und Ratgeber-Themen.',
+    'Kontaktieren Sie Luxusumzug Wien für eine diskrete Anfrage zu Umzugsplanung, Möbeltransport und VIP-Relocation.',
+  keywords: ['Kontakt Luxusumzug', 'Umzug Anfrage Wien', 'VIP Umzug Kontakt'],
   alternates: { canonical: '/kontakt/' },
+  openGraph: {
+    title: 'Kontakt | Luxusumzug',
+    description: 'Diskrete Anfrage zu Planung, Transport und Ratgeber-Themen.',
+    url: `${siteConfig.url}/kontakt/`,
+  },
 };
 
 export default function KontaktPage() {
   return (
     <>
+      <JsonLd
+        data={buildWebPageJsonLd({
+          title: 'Kontakt – Luxusumzug Anfrage',
+          description:
+            'Kontaktieren Sie Luxusumzug Wien für eine diskrete Anfrage zu Umzugsplanung und Transport.',
+          path: '/kontakt/',
+        })}
+      />
+      <JsonLd
+        data={buildBreadcrumbJsonLd([
+          { name: 'Start', path: '/' },
+          { name: 'Kontakt', path: '/kontakt/' },
+        ])}
+      />
       <PageHero
         breadcrumb="Kontakt"
         description="Schildern Sie kurz Ihr Anliegen – wir melden uns verbindlich und diskret."
@@ -27,7 +52,10 @@ export default function KontaktPage() {
             Schreiben Sie uns eine E-Mail mit Wunschtermin, Wohnsituation und besonderen
             Anforderungen (Kunst, Wein, Smart Home, Familie, etc.).
           </p>
-          <a className="btn-gold mt-8" href={`mailto:${siteConfig.email}?subject=Anfrage%20Luxusumzug`}>
+          <a
+            className="btn-gold mt-8"
+            href={`mailto:${siteConfig.email}?subject=Anfrage%20Luxusumzug`}
+          >
             {siteConfig.email}
           </a>
           <p className="mt-8 text-sm text-muted">

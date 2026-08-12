@@ -3,10 +3,16 @@ import { ContentPage } from '@/components/ContentPage';
 import { getAllPosts } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Umzugsplanung',
+  title: 'Umzugsplanung Wien – stressfrei vorbereiten',
   description:
-    'Strukturierte Umzugsplanung für Wien: Zeitplan, Vorbereitung und Checklisten für einen stressfreien Ablauf.',
+    'Strukturierte Umzugsplanung für Wien: Zeitplan, Inventar, Zufahrt und Übergabe für einen ruhigen, sicheren Ablauf.',
+  keywords: ['Umzugsplanung Wien', 'Umzug vorbereiten', 'Umzug Zeitplan', 'Luxusumzug'],
   alternates: { canonical: '/umzugsplanung/' },
+  openGraph: {
+    title: 'Umzugsplanung Wien',
+    description: 'Mit klarer Vorbereitung sparen Sie Zeit, Nerven und unnötige Kosten.',
+    url: 'https://luxusumzug.at/umzugsplanung/',
+  },
 };
 
 export default function UmzugsplanungPage() {
@@ -17,6 +23,7 @@ export default function UmzugsplanungPage() {
   return (
     <ContentPage
       breadcrumb="Umzugsplanung"
+      path="/umzugsplanung/"
       bullets={[
         'Realistischen Zeitplan mit Puffern erstellen',
         'Inventar und Sondergüter früh erfassen',

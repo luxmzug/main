@@ -1,10 +1,13 @@
 import Link from 'next/link';
+import { JsonLd } from '@/components/JsonLd';
 import { PageHero } from '@/components/PageHero';
 import { PostCard } from '@/components/PostCard';
 import type { Post } from '@/lib/posts';
+import { buildBreadcrumbJsonLd, buildWebPageJsonLd } from '@/lib/seo';
 
 export const ContentPage = (props: {
   breadcrumb: string;
+  path: string;
   title: string;
   description: string;
   intro: string[];
@@ -15,6 +18,19 @@ export const ContentPage = (props: {
 }) => {
   return (
     <>
+      <JsonLd
+        data={buildWebPageJsonLd({
+          title: props.title,
+          description: props.description,
+          path: props.path,
+        })}
+      />
+      <JsonLd
+        data={buildBreadcrumbJsonLd([
+          { name: 'Start', path: '/' },
+          { name: props.breadcrumb, path: props.path },
+        ])}
+      />
       <PageHero
         breadcrumb={props.breadcrumb}
         description={props.description}

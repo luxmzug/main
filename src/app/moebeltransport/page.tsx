@@ -3,9 +3,10 @@ import { ContentPage } from '@/components/ContentPage';
 import { getAllPosts } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Möbeltransport',
+  title: 'Möbeltransport Wien – sicher & fachgerecht',
   description:
-    'Sicherer Möbeltransport in Wien: Demontage, Schutzverpackung und fachgerechter Aufbau für hochwertige Einrichtung.',
+    'Sicherer Möbeltransport in Wien: Demontage, Schutzverpackung und fachgerechter Aufbau für hochwertige Einrichtung und Kunst.',
+  keywords: ['Möbeltransport Wien', 'Kunsttransport', 'Möbel demontieren', 'Luxusumzug'],
   alternates: { canonical: '/moebeltransport/' },
 };
 
@@ -17,6 +18,7 @@ export default function MoebeltransportPage() {
   return (
     <ContentPage
       breadcrumb="Möbeltransport"
+      path="/moebeltransport/"
       bullets={[
         'Empfindliche Oberflächen und Kanten schützen',
         'Schwere Möbel fachgerecht demontieren',

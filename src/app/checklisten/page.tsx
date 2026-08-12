@@ -3,9 +3,10 @@ import { ContentPage } from '@/components/ContentPage';
 import { getAllPosts } from '@/lib/posts';
 
 export const metadata: Metadata = {
-  title: 'Umzugschecklisten',
+  title: 'Umzugscheckliste Wien – Schritt für Schritt',
   description:
-    'Praktische Umzugschecklisten: 8 Wochen vorher bis zur Übergabe – strukturiert und stressfrei.',
+    'Praktische Umzugschecklisten für Wien: von 8 Wochen vorher bis zur Übergabe – strukturiert, klar und stressfrei.',
+  keywords: ['Umzugscheckliste', 'Umzug Checkliste Wien', 'Umzug vorbereiten', 'Luxusumzug'],
   alternates: { canonical: '/checklisten/' },
 };
 
@@ -13,6 +14,7 @@ export default function ChecklistenPage() {
   return (
     <ContentPage
       breadcrumb="Checklisten"
+      path="/checklisten/"
       bullets={[
         '8–6 Wochen vorher: Termin, Team und Sondertransporte klären',
         '4 Wochen vorher: ausmisten, Kartons, Nachsendeauftrag',

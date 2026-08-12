@@ -1,26 +1,15 @@
 import Link from 'next/link';
 import type { PostFrontmatter } from '@/lib/posts';
-
-const categoryImages: Record<string, string> = {
-  Kunsttransport: '/images/service-villa.jpg',
-  Relocation: '/images/service-diskret.jpg',
-  Weinkeller: '/images/service-packen.jpg',
-  Umzugslogistik: '/images/hero-wien.jpg',
-  'Smart Home': '/images/service-diskret.jpg',
-};
-
-export const getPostImage = (category: string) => {
-  return categoryImages[category] ?? '/images/hero-wien.jpg';
-};
+import { getPostImagePath } from '@/lib/seo';
 
 export const PostCard = (props: { post: PostFrontmatter }) => {
-  const imageSrc = getPostImage(props.post.category);
+  const imageSrc = getPostImagePath(props.post.category);
 
   return (
     <article className="card-soft group flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lg">
       <Link className="block overflow-hidden" href={`/blog/${props.post.slug}/`}>
         <img
-          alt=""
+          alt={`Beitragsbild: ${props.post.title}`}
           className="aspect-[16/10] w-full object-cover transition duration-700 group-hover:scale-[1.03]"
           height={420}
           loading="lazy"
