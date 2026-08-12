@@ -1,27 +1,26 @@
 import type React from 'react';
 import type { Metadata, Viewport } from 'next';
-import { Instrument_Serif, Manrope } from 'next/font/google';
+import { Montserrat, Playfair_Display } from 'next/font/google';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { siteConfig } from '@/lib/site';
 import '@/styles/global.css';
 
-const display = Instrument_Serif({
+const display = Playfair_Display({
   subsets: ['latin'],
-  weight: '400',
   variable: '--font-display',
   display: 'swap',
 });
 
-const sans = Manrope({
+const sans = Montserrat({
   subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 });
 
 export const viewport: Viewport = {
-  themeColor: '#12110f',
-  colorScheme: 'dark',
+  themeColor: '#0c2340',
+  colorScheme: 'light',
 };
 
 export const metadata: Metadata = {
@@ -63,7 +62,7 @@ export const metadata: Metadata = {
         url: '/images/og-cover.jpg',
         width: 1200,
         height: 630,
-        alt: 'Luxusumzug Wien – exklusive VIP-Umzüge',
+        alt: siteConfig.title,
       },
     ],
   },

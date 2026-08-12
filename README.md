@@ -40,7 +40,9 @@ docker compose up -d --build
 
 Site: [http://localhost:2009](http://localhost:2009)
 
-## Content
+## Hero image
+
+Replace `public/images/hero-header.jpg` with your own header photo (recommended ~2000px wide). Keep the same filename.
 
 Add posts as `.mdx` files in `content/blog/` with frontmatter:
 

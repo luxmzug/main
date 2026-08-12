@@ -9,17 +9,15 @@ const categoryImages: Record<string, string> = {
   'Smart Home': '/images/service-diskret.jpg',
 };
 
-export const PostCard = (props: { post: PostFrontmatter }) => {
-  const dateLabel = new Intl.DateTimeFormat('de-AT', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  }).format(new Date(props.post.date));
+export const getPostImage = (category: string) => {
+  return categoryImages[category] ?? '/images/hero-wien.jpg';
+};
 
-  const imageSrc = categoryImages[props.post.category] ?? '/images/hero-wien.jpg';
+export const PostCard = (props: { post: PostFrontmatter }) => {
+  const imageSrc = getPostImage(props.post.category);
 
   return (
-    <article className="group overflow-hidden border border-white/10 bg-ink/40 transition duration-500 hover:border-brass/40">
+    <article className="card-soft group flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lg">
       <Link className="block overflow-hidden" href={`/blog/${props.post.slug}/`}>
         <img
           alt=""
@@ -30,26 +28,21 @@ export const PostCard = (props: { post: PostFrontmatter }) => {
           width={720}
         />
       </Link>
-      <div className="p-6 md:p-8">
-        <div className="flex flex-wrap items-center gap-3 text-xs tracking-[0.16em] uppercase">
-          <span className="text-brass">{props.post.category}</span>
-          <span className="text-paper-muted/50">·</span>
-          <time className="text-paper-muted" dateTime={props.post.date}>
-            {dateLabel}
-          </time>
-        </div>
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <p className="text-xs font-semibold tracking-[0.14em] text-gold uppercase">
+          {props.post.category}
+        </p>
         <h3
-          className="mt-3 text-2xl leading-snug text-paper transition group-hover:text-brass-bright md:text-3xl"
+          className="mt-2 text-xl leading-snug text-navy transition group-hover:text-gold-dark md:text-2xl"
           style={{ fontFamily: 'var(--font-display)' }}
         >
           <Link href={`/blog/${props.post.slug}/`}>{props.post.title}</Link>
         </h3>
-        <p className="mt-3 text-paper-muted">{props.post.description}</p>
-        <Link
-          className="mt-5 inline-flex text-sm font-medium tracking-wide text-brass-bright transition hover:text-brass"
-          href={`/blog/${props.post.slug}/`}
-        >
-          Weiterlesen
+        <p className="mt-3 flex-1 text-sm leading-relaxed text-muted md:text-[15px]">
+          {props.post.description}
+        </p>
+        <Link className="btn-gold mt-5 self-start" href={`/blog/${props.post.slug}/`}>
+          Zum Artikel →
         </Link>
       </div>
     </article>

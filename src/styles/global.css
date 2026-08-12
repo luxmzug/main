@@ -1,12 +1,18 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-ink: #12110f;
-  --color-ink-soft: #1c1b18;
-  --color-paper: #f3efe6;
-  --color-paper-muted: #d9d2c5;
-  --color-brass: #b08d57;
-  --color-brass-bright: #d4b483;
+  --color-navy: #0c2340;
+  --color-navy-deep: #081a30;
+  --color-navy-soft: #143356;
+  --color-gold: #c9a227;
+  --color-gold-light: #e0c36a;
+  --color-gold-dark: #a8841a;
+  --color-cream: #f7f4ee;
+  --color-cream-dark: #ebe6db;
+  --color-ink: #0c2340;
+  --color-muted: #5c6570;
+  --color-white: #ffffff;
+  --shadow-card: 0 10px 30px rgb(12 35 64 / 0.08);
 }
 
 @layer base {
@@ -15,55 +21,53 @@
   }
 
   body {
-    @apply bg-ink text-paper antialiased;
+    @apply bg-cream text-navy antialiased;
     font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--color-brass) 45%, transparent);
-  }
-}
-
-@layer utilities {
-  .animate-fade-up {
-    animation: fade-up 0.9s ease-out both;
-  }
-
-  .animate-hero-zoom {
-    animation: hero-zoom 18s ease-out both;
-  }
-}
-
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes hero-zoom {
-  from {
-    transform: scale(1.08);
-  }
-
-  to {
-    transform: scale(1);
+    background: color-mix(in oklab, var(--color-gold) 40%, transparent);
   }
 }
 
 @layer components {
+  .section-ornament {
+    @apply mx-auto mb-4 flex items-center justify-center gap-3;
+  }
+
+  .section-ornament::before,
+  .section-ornament::after {
+    content: '';
+    @apply h-px w-12 bg-gold md:w-20;
+  }
+
+  .section-ornament-diamond {
+    @apply size-2 rotate-45 bg-gold;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 rounded-md bg-gold px-5 py-3 text-sm font-semibold text-navy shadow-sm transition hover:bg-gold-light;
+  }
+
+  .btn-gold-outline {
+    @apply inline-flex items-center justify-center gap-2 rounded-md border border-gold/60 bg-transparent px-5 py-3 text-sm font-semibold text-gold transition hover:bg-gold hover:text-navy;
+  }
+
+  .card-soft {
+    @apply rounded-2xl border border-navy/8 bg-gradient-to-br from-white to-cream-dark/60 shadow-[var(--shadow-card)];
+  }
+
   .prose-blog {
-    @apply mx-auto max-w-3xl text-lg leading-relaxed text-paper-muted;
+    @apply mx-auto max-w-3xl text-lg leading-relaxed text-muted;
   }
 
   .prose-blog h2 {
-    @apply mt-12 mb-4 font-normal text-3xl text-paper;
+    @apply mt-12 mb-4 font-normal text-3xl text-navy;
     font-family: var(--font-display), Georgia, serif;
+  }
+
+  .prose-blog h3 {
+    @apply mt-8 mb-3 text-xl font-semibold text-navy;
   }
 
   .prose-blog p {
@@ -79,10 +83,42 @@
   }
 
   .prose-blog strong {
-    @apply font-semibold text-paper;
+    @apply font-semibold text-navy;
   }
 
   .prose-blog a {
-    @apply text-brass-bright underline underline-offset-4 transition hover:text-brass;
+    @apply text-gold-dark underline underline-offset-4 transition hover:text-gold;
   }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up 0.85s ease-out both;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-zoom {
+  from {
+    transform: scale(1.06);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+.animate-hero-zoom {
+  animation: hero-zoom 16s ease-out both;
 }
