@@ -33,12 +33,12 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   keywords: [...siteConfig.keywords],
-  authors: [{ name: siteConfig.legalName, url: siteConfig.url }],
-  creator: siteConfig.legalName,
-  publisher: siteConfig.legalName,
+  authors: [{ name: siteConfig.name, url: siteConfig.url }],
+  creator: siteConfig.name,
+  publisher: siteConfig.name,
   applicationName: siteConfig.name,
-  category: 'Umzugsservice',
-  classification: 'Business',
+  category: 'Ratgeber',
+  classification: 'Information',
   referrer: 'origin-when-cross-origin',
   formatDetection: {
     email: false,
@@ -49,7 +49,6 @@ export const metadata: Metadata = {
     canonical: '/',
     languages: {
       'de-AT': siteConfig.url,
-      de: siteConfig.url,
       'x-default': siteConfig.url,
     },
   },
@@ -102,8 +101,6 @@ export const metadata: Metadata = {
   other: {
     'geo.region': 'AT-9',
     'geo.placename': 'Wien',
-    'geo.position': '48.2082;16.3738',
-    ICBM: '48.2082, 16.3738',
   },
 };
 
@@ -111,6 +108,12 @@ export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html className={`${display.variable} ${sans.variable}`} lang="de-AT">
       <body className="min-h-screen font-sans">
+        <a
+          className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-gold focus:px-4 focus:py-2 focus:text-navy"
+          href="#main-content"
+        >
+          Zum Inhalt springen
+        </a>
         <SiteHeader />
         <main id="main-content">{props.children}</main>
         <SiteFooter />

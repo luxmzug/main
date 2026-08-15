@@ -23,8 +23,8 @@ export default function UeberUnsPage() {
       ctaHref="/kontakt/"
       description="Ihr Umzug. Unsere Leidenschaft."
       intro={[
-        'Luxusumzug steht für stilvolles, sicheres und strukturiertes Übersiedeln. Wir bündeln praxisnahe Ratgeber rund um Planung, Möbeltransport, Kosten und Checklisten.',
-        'Ziel ist ein gutes Gefühl beim Ankommen – mit weniger Stress und mehr Überblick.',
+        'Luxusumzug ist ein redaktioneller Ratgeber rund um stilvolles, sicheres und strukturiertes Übersiedeln. Wir bündeln praxisnahe Informationen zu Planung, Möbeltransport, Kosten und Checklisten – ohne gewerbliches Leistungsangebot.',
+        'Ziel ist Orientierung und ein gutes Gefühl beim Ankommen – mit weniger Stress und mehr Überblick.',
       ]}
       relatedPosts={getAllPosts().slice(0, 3)}
       title="Über Luxusumzug"

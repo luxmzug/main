@@ -43,6 +43,11 @@ const homeFaqs = [
     answer:
       'Beginnen Sie mit einem realistischen Zeitplan, einer Inventarliste und unseren Checklisten. Anschließend klären Sie Sondertransporte und die Übergabe.',
   },
+  {
+    question: 'Bietet luxusumzug.at Umzugsdienstleistungen an?',
+    answer:
+      'Nein. Die Website ist ein redaktionelles Informationsangebot. Es wird kein Gewerbe ausgeübt und es werden keine Umzüge vermittelt oder durchgeführt.',
+  },
 ] as const;
 
 export default function HomePage() {

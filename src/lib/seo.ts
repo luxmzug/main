@@ -49,32 +49,23 @@ const organizationId = () => `${siteConfig.url}/#organization`;
 const websiteId = () => `${siteConfig.url}/#website`;
 
 /**
- * Shared Organization / MovingCompany entity.
+ * Editorial publisher brand (not a moving company).
  */
 export const buildOrganizationJsonLd = () => {
   return {
-    '@type': ['Organization', 'MovingCompany', 'LocalBusiness'],
+    '@type': 'Organization',
     '@id': organizationId(),
-    name: siteConfig.legalName,
-    alternateName: siteConfig.name,
+    name: siteConfig.name,
+    legalName: siteConfig.legalName,
+    alternateName: siteConfig.legalName,
     url: siteConfig.url,
     email: siteConfig.email,
-    description: siteConfig.description,
-    foundingLocation: {
-      '@type': 'Place',
-      name: 'Wien',
-      addressCountry: 'AT',
-    },
+    description:
+      'Redaktionelles Informationsangebot zu hochwertigen Umzügen in Wien und Österreich. Kein Gewerbe, keine Umzugsdienstleistung.',
     areaServed: [
       { '@type': 'City', name: 'Wien', addressCountry: 'AT' },
       { '@type': 'Country', name: 'Österreich' },
     ],
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Wien',
-      addressRegion: 'Wien',
-      addressCountry: 'AT',
-    },
     image: absoluteUrl(siteConfig.ogImage),
     logo: {
       '@type': 'ImageObject',
@@ -82,13 +73,12 @@ export const buildOrganizationJsonLd = () => {
       width: 512,
       height: 512,
     },
-    priceRange: '$$$',
     knowsAbout: [...siteConfig.keywords],
     contactPoint: {
       '@type': 'ContactPoint',
-      contactType: 'customer service',
+      contactType: 'editorial',
       email: siteConfig.email,
-      availableLanguage: ['German', 'de-AT'],
+      availableLanguage: ['de-AT', 'German'],
     },
   };
 };
@@ -246,15 +236,8 @@ export const buildArticleJsonLd = (post: Post) => {
         },
         url,
         image: [image, absoluteUrl(siteConfig.ogImage)],
-        author: {
-          '@type': 'Organization',
-          '@id': organizationId(),
-          name: siteConfig.legalName,
-          url: siteConfig.url,
-        },
-        publisher: {
-          '@id': organizationId(),
-        },
+        author: { '@id': organizationId() },
+        publisher: { '@id': organizationId() },
         isPartOf: { '@id': websiteId() },
       },
       buildOrganizationJsonLd(),

@@ -27,8 +27,11 @@ export const SiteFooter = () => {
               Ihr Umzug. Unsere Leidenschaft.
             </p>
             <p className="mt-2 text-sm text-white/70">
-              © {new Date().getFullYear()} {siteConfig.legalName}
+              © {new Date().getFullYear()} {siteConfig.name}
             </p>
+            <Link className="mt-2 inline-block text-sm text-white/70 underline underline-offset-4 hover:text-gold" href="/impressum/">
+              Impressum
+            </Link>
             <a className="mt-3 inline-block text-sm text-gold hover:text-gold-light" href={`mailto:${siteConfig.email}`}>
               {siteConfig.email}
             </a>

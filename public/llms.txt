@@ -1,20 +1,29 @@
-# luxusumzug.at – Kurzüberblick für KI-Assistenten
+# luxusumzug.at
 
-> Premium-Umzugsratgeber für Wien und Österreich (Sprache: de-AT).
+Redaktioneller Ratgeber (de-AT) zu hochwertigen Umzügen in Wien und Österreich.
+Kein Gewerbe, keine Umzugsdienstleistung, keine Vertragsangebote.
 
-## Website
 - URL: https://luxusumzug.at
-- Kontakt: kontakt@luxusumzug.at
+- Kontakt: info@luxusumzug.at
+- Medieninhaber: Fatih Duman, Wien
+- Impressum: https://luxusumzug.at/impressum/
 
-## Wichtige Seiten
-- / – Startseite
-- /blog/ – alle Ratgeber
-- /umzugsplanung/
-- /moebeltransport/
-- /kosten/
-- /checklisten/
-- /ueber-uns/
-- /kontakt/
+## Seiten
+- https://luxusumzug.at/
+- https://luxusumzug.at/blog/
+- https://luxusumzug.at/umzugsplanung/
+- https://luxusumzug.at/moebeltransport/
+- https://luxusumzug.at/kosten/
+- https://luxusumzug.at/checklisten/
+- https://luxusumzug.at/ueber-uns/
+- https://luxusumzug.at/kontakt/
+- https://luxusumzug.at/impressum/
 
-## Inhalte
-MDX-Artikel unter content/blog/ zu Kunsttransport, Relocation, Weinkeller, Halteverbotszone und Smart-Home-Umzug.
+## Ratgeber
+- https://luxusumzug.at/blog/kunst-antiquitaeten-transport-wien-1-bezirk/ — Kunst- und Antiquitätentransport im 1. Bezirk
+- https://luxusumzug.at/blog/relocation-service-wien-diplomaten/ — Relocation-Guide für Diplomaten und Expats
+- https://luxusumzug.at/blog/weinkeller-umzug-wien-doebling/ — Weinkeller-Transport in Döbling
+- https://luxusumzug.at/blog/halteverbotszone-luxusumzug-wien/ — Halteverbotszone in Wien
+- https://luxusumzug.at/blog/smart-home-it-umzug-wien/ — Smart-Home- und IT-Umzug
+
+Vollständige Inhaltsübersicht: https://luxusumzug.at/llms-full.txt

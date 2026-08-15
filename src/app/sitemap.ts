@@ -23,6 +23,15 @@ export default function sitemap(): MetadataRoute.Sitemap {
     };
   });
 
+  const legalRoutes = [
+    {
+      url: `${siteConfig.url}/impressum/`,
+      lastModified: new Date(),
+      changeFrequency: 'yearly' as const,
+      priority: 0.3,
+    },
+  ];
+
   const posts = getAllPosts().map((post) => ({
     url: `${siteConfig.url}/blog/${post.slug}/`,
     lastModified: new Date(post.date),
@@ -31,5 +40,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     images: [`${siteConfig.url}${getPostImagePath(post.category)}`],
   }));
 
-  return [...staticRoutes, ...posts];
+  return [...staticRoutes, ...legalRoutes, ...posts];
 }

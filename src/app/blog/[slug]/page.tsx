@@ -36,7 +36,7 @@ export const generateMetadata = async (props: BlogPostPageProps): Promise<Metada
     title: post.title,
     description: post.description,
     keywords: [post.category, post.title, 'Luxusumzug Wien', 'Umzug Wien', siteConfig.city],
-    authors: [{ name: siteConfig.legalName, url: siteConfig.url }],
+    authors: [{ name: siteConfig.name, url: siteConfig.url }],
     category: post.category,
     alternates: {
       canonical: `/blog/${post.slug}/`,

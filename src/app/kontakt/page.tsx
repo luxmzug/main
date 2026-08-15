@@ -9,9 +9,9 @@ import {
 import { siteConfig } from '@/lib/site';
 
 export const metadata: Metadata = {
-  title: 'Kontakt – Luxusumzug Anfrage',
+  title: 'Kontakt – Luxusumzug',
   description:
-    'Kontaktieren Sie Luxusumzug Wien für eine diskrete Anfrage zu Umzugsplanung, Möbeltransport und VIP-Relocation.',
+    'Kontaktieren Sie Luxusumzug Wien bei Fragen zu den Ratgeber-Inhalten rund um Umzugsplanung und Möbeltransport.',
   keywords: ['Kontakt Luxusumzug', 'Umzug Anfrage Wien', 'VIP Umzug Kontakt'],
   alternates: { canonical: '/kontakt/' },
   openGraph: {
@@ -26,9 +26,9 @@ export default function KontaktPage() {
     <>
       <JsonLd
         data={buildWebPageJsonLd({
-          title: 'Kontakt – Luxusumzug Anfrage',
+          title: 'Kontakt – Luxusumzug',
           description:
-            'Kontaktieren Sie Luxusumzug Wien für eine diskrete Anfrage zu Umzugsplanung und Transport.',
+            'Kontaktieren Sie Luxusumzug Wien bei Fragen zu den Ratgeber-Inhalten.',
           path: '/kontakt/',
         })}
       />
@@ -40,8 +40,8 @@ export default function KontaktPage() {
       />
       <PageHero
         breadcrumb="Kontakt"
-        description="Schildern Sie kurz Ihr Anliegen – wir melden uns verbindlich und diskret."
-        title="Jetzt anfragen"
+        description="Fragen zu den Inhalten? Schreiben Sie uns – unverbindlich und diskret."
+        title="Kontakt"
       />
       <section className="bg-cream px-4 py-14 md:px-6 md:py-20 lg:px-8">
         <div className="card-soft mx-auto max-w-2xl p-8 md:p-10">
@@ -49,8 +49,8 @@ export default function KontaktPage() {
             Direkter Draht
           </h2>
           <p className="mt-3 text-muted">
-            Schreiben Sie uns eine E-Mail mit Wunschtermin, Wohnsituation und besonderen
-            Anforderungen (Kunst, Wein, Smart Home, Familie, etc.).
+            Schreiben Sie uns bei Fragen zu den Ratgeber-Themen. Dies ist ein
+            Informationsangebot und keine Auftrags- oder Angebotsannahme.
           </p>
           <a
             className="btn-gold mt-8"
