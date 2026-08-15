@@ -23,6 +23,12 @@ export default function ImpressumPage() {
         })}
       />
       <JsonLd
+        data={buildBreadcrumbJsonLd([
+          { name: 'Start', path: '/' },
+          { name: 'Impressum', path: '/impressum/' },
+        ])}
+      />
+      <JsonLd
         data={{
           '@context': 'https://schema.org',
           '@type': 'Person',
