@@ -30,4 +30,4 @@ URL: https://luxusumzug.at/blog/smart-home-it-umzug-wien/
 Thema: Abbau, Transport und Wiederinbetriebnahme von KNX- und High-End-Technik.
 
 ## Leitseiten
-Umzugsplanung, Möbeltransport, Kosten, Checklisten, Über uns, Kontakt: siehe https://luxusumzug.at/llms.txt
+Umzugsplanung, Möbeltransport, Kosten, Checklisten, Über uns: siehe https://luxusumzug.at/llms.txt

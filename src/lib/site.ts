@@ -39,5 +39,4 @@ export const navItems = [
   { href: '/kosten/', label: 'Kosten' },
   { href: '/checklisten/', label: 'Checklisten' },
   { href: '/ueber-uns/', label: 'Über uns' },
-  { href: '/kontakt/', label: 'Kontakt' },
 ] as const;

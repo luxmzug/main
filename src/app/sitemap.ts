@@ -12,14 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteConfig.url}${path === '/' ? '/' : path}`,
       lastModified: new Date(),
       changeFrequency: (item.href === '/' ? 'weekly' : 'monthly') as 'weekly' | 'monthly',
-      priority:
-        item.href === '/'
-          ? 1
-          : item.href === '/blog/'
-            ? 0.9
-            : item.href === '/kontakt/'
-              ? 0.8
-              : 0.7,
+      priority: item.href === '/' ? 1 : item.href === '/blog/' ? 0.9 : 0.7,
     };
   });
 

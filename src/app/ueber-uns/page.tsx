@@ -20,7 +20,6 @@ export default function UeberUnsPage() {
         'Inhalte für anspruchsvolle Privathaushalte',
         'Praxisnahe Ratgeber statt leerer Versprechen',
       ]}
-      ctaHref="/kontakt/"
       description="Ihr Umzug. Unsere Leidenschaft."
       intro={[
         'Luxusumzug ist ein redaktioneller Ratgeber rund um stilvolles, sicheres und strukturiertes Übersiedeln. Wir bündeln praxisnahe Informationen zu Planung, Möbeltransport, Kosten und Checklisten – ohne gewerbliches Leistungsangebot.',

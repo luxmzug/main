@@ -50,9 +50,11 @@ export const ContentPage = (props: {
               ))}
             </ul>
           ) : null}
-          <Link className="btn-gold mt-8" href={props.ctaHref ?? '/kontakt/'}>
-            {props.ctaLabel ?? 'Jetzt Kontakt'}
-          </Link>
+          {props.ctaHref && props.ctaLabel ? (
+            <Link className="btn-gold mt-8" href={props.ctaHref}>
+              {props.ctaLabel}
+            </Link>
+          ) : null}
         </div>
       </section>
 

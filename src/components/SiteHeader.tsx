@@ -50,37 +50,22 @@ export const SiteHeader = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Link className="btn-gold hidden sm:inline-flex" href="/kontakt/">
-            <svg aria-hidden="true" className="size-4" fill="none" viewBox="0 0 24 24">
-              <path
-                d="M3 16h18l-1.5-6H9L7.5 12H4L3 16Z"
-                stroke="currentColor"
-                strokeLinejoin="round"
-                strokeWidth="1.6"
-              />
-              <circle cx="7.5" cy="17.5" fill="currentColor" r="1.2" />
-              <circle cx="16.5" cy="17.5" fill="currentColor" r="1.2" />
-            </svg>
-            Jetzt Kontakt
-          </Link>
-          <button
-            aria-controls="mobile-nav"
-            aria-expanded={open}
-            className="inline-flex items-center justify-center rounded-md border border-white/20 p-2 text-white xl:hidden"
-            onClick={() => setOpen((value) => !value)}
-            type="button"
-          >
-            <span className="sr-only">Menü</span>
-            <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              {open ? (
-                <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeWidth="2" />
-              ) : (
-                <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" strokeWidth="2" />
-              )}
-            </svg>
-          </button>
-        </div>
+        <button
+          aria-controls="mobile-nav"
+          aria-expanded={open}
+          className="inline-flex items-center justify-center rounded-md border border-white/20 p-2 text-white xl:hidden"
+          onClick={() => setOpen((value) => !value)}
+          type="button"
+        >
+          <span className="sr-only">Menü</span>
+          <svg className="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            {open ? (
+              <path d="M6 18L18 6M6 6l12 12" strokeLinecap="round" strokeWidth="2" />
+            ) : (
+              <path d="M4 7h16M4 12h16M4 17h16" strokeLinecap="round" strokeWidth="2" />
+            )}
+          </svg>
+        </button>
       </div>
 
       {open ? (
@@ -96,9 +81,6 @@ export const SiteHeader = () => {
                 {item.label}
               </Link>
             ))}
-            <Link className="btn-gold mt-4" href="/kontakt/" onClick={() => setOpen(false)}>
-              Jetzt Kontakt
-            </Link>
           </nav>
         </div>
       ) : null}
