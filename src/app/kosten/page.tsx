@@ -22,7 +22,7 @@ export default function KostenPage() {
         'Termin, Distanz und behördliche Genehmigungen',
       ]}
       ctaHref="/kontakt/"
-      ctaLabel="Unverbindlich anfragen"
+      ctaLabel="Jetzt Kontakt"
       description="Damit Sie die Kosten im Blick behalten – ohne Überraschungen am Umzugstag."
       intro={[
         'Umzugskosten entstehen nicht zufällig: Sie spiegeln Aufwand, Schutzbedarf und Organisation wider. Wer früh inventarisiert und Anforderungen klar benennt, erhält realistische Angebote.',

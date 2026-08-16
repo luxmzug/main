@@ -51,7 +51,7 @@ export const ContentPage = (props: {
             </ul>
           ) : null}
           <Link className="btn-gold mt-8" href={props.ctaHref ?? '/kontakt/'}>
-            {props.ctaLabel ?? 'Jetzt anfragen'}
+            {props.ctaLabel ?? 'Jetzt Kontakt'}
           </Link>
         </div>
       </section>

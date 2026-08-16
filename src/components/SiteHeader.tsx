@@ -62,7 +62,7 @@ export const SiteHeader = () => {
               <circle cx="7.5" cy="17.5" fill="currentColor" r="1.2" />
               <circle cx="16.5" cy="17.5" fill="currentColor" r="1.2" />
             </svg>
-            Jetzt anfragen
+            Jetzt Kontakt
           </Link>
           <button
             aria-controls="mobile-nav"
@@ -97,7 +97,7 @@ export const SiteHeader = () => {
               </Link>
             ))}
             <Link className="btn-gold mt-4" href="/kontakt/" onClick={() => setOpen(false)}>
-              Jetzt anfragen
+              Jetzt Kontakt
             </Link>
           </nav>
         </div>

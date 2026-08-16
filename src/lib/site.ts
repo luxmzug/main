@@ -11,7 +11,7 @@ export const siteConfig = {
   city: 'Wien',
   region: 'Wien',
   country: 'AT',
-  ownerName: 'Fatih Duman',
+  ownerName: 'Nuran Duman',
   email: 'info@luxusumzug.at',
   ogImage: '/images/og-cover.jpg',
   twitterHandle: '@luxusumzug',

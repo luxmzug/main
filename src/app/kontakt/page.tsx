@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   title: 'Kontakt – Luxusumzug',
   description:
     'Kontaktieren Sie Luxusumzug Wien bei Fragen zu den Ratgeber-Inhalten rund um Umzugsplanung und Möbeltransport.',
-  keywords: ['Kontakt Luxusumzug', 'Umzug Anfrage Wien', 'VIP Umzug Kontakt'],
+  keywords: ['Kontakt Luxusumzug', 'Umzug Ratgeber Wien', 'VIP Umzug Kontakt'],
   alternates: { canonical: '/kontakt/' },
   openGraph: {
     title: 'Kontakt | Luxusumzug',
-    description: 'Diskrete Anfrage zu Planung, Transport und Ratgeber-Themen.',
+    description: 'Fragen zu den Ratgeber-Inhalten – unverbindlich und ohne Angebot.',
     url: `${siteConfig.url}/kontakt/`,
   },
 };
@@ -54,7 +54,7 @@ export default function KontaktPage() {
           </p>
           <a
             className="btn-gold mt-8"
-            href={`mailto:${siteConfig.email}?subject=Anfrage%20Luxusumzug`}
+            href={`mailto:${siteConfig.email}?subject=Kontakt%20Luxusumzug`}
           >
             {siteConfig.email}
           </a>
