@@ -32,6 +32,12 @@ export const SiteFooter = () => {
             <Link className="mt-2 inline-block text-sm text-white/70 underline underline-offset-4 hover:text-gold" href="/impressum/">
               Impressum
             </Link>
+            <a
+              className="mt-2 block text-sm text-gold hover:text-gold-light"
+              href={`mailto:${siteConfig.email}`}
+            >
+              {siteConfig.email}
+            </a>
           </div>
         </div>
 
