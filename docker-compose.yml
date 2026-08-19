@@ -4,4 +4,12 @@ services:
     container_name: luxusumzug-web
     restart: unless-stopped
     ports:
-      - '2009:80'
+      - '2009:3000'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      DATABASE_PATH: data/luxusumzug.db
+    volumes:
+      - ./data:/app/data
+      - ./public/uploads:/app/public/uploads

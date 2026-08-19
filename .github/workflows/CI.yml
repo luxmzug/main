@@ -16,4 +16,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run check:types
+        env:
+          ADMIN_EMAIL: ci@localhost.local
+          ADMIN_PASSWORD: CiPlaceholder12
+          SESSION_SECRET: ci-build-secret-must-be-at-least-32-chars
       - run: npm run build
+        env:
+          ADMIN_EMAIL: ci@localhost.local
+          ADMIN_PASSWORD: CiPlaceholder12
+          SESSION_SECRET: ci-build-secret-must-be-at-least-32-chars

@@ -10,10 +10,21 @@ const categoryImages: Record<string, string> = {
 };
 
 /**
- * Resolves a representative image path for a post category.
+ * Resolves a cover image: uploaded asset when present, otherwise the category fallback.
  */
-export const getPostImagePath = (category: string) => {
-  return categoryImages[category] ?? '/images/hero-header.webp';
+export const getPostImagePath = (post: { category: string; coverImage?: string | null }) => {
+  if (post.coverImage) {
+    return post.coverImage;
+  }
+
+  return categoryImages[post.category] ?? '/images/hero-header.webp';
+};
+
+/**
+ * Strips tags so HTML posts still yield a readable word count.
+ */
+const plainText = (content: string) => {
+  return content.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 };
 
 /**
@@ -32,15 +43,15 @@ export const absoluteUrl = (path = '/') => {
  * Estimates reading time in minutes from markdown content.
  */
 export const getReadingTimeMinutes = (content: string) => {
-  const words = content.trim().split(/\s+/).filter(Boolean).length;
+  const words = plainText(content).split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 200));
 };
 
 /**
- * Counts words in markdown content.
+ * Counts words in markdown or HTML content.
  */
 export const getWordCount = (content: string) => {
-  return content.trim().split(/\s+/).filter(Boolean).length;
+  return plainText(content).split(/\s+/).filter(Boolean).length;
 };
 
 type JsonLd = Record<string, unknown> | Record<string, unknown>[];
@@ -212,7 +223,7 @@ export const buildBlogIndexJsonLd = (posts: PostFrontmatter[]) => {
  */
 export const buildArticleJsonLd = (post: Post) => {
   const url = absoluteUrl(`/blog/${post.slug}/`);
-  const image = absoluteUrl(getPostImagePath(post.category));
+  const image = absoluteUrl(getPostImagePath(post));
 
   return {
     '@context': 'https://schema.org',

@@ -89,6 +89,59 @@
   .prose-blog a {
     @apply text-gold-dark underline underline-offset-4 transition hover:text-gold;
   }
+
+  .prose-blog img {
+    @apply my-6 rounded-xl;
+  }
+
+  .prose-blog blockquote {
+    @apply my-6 border-l-4 border-gold pl-4 text-navy/80 italic;
+  }
+
+  .admin-label {
+    @apply mb-1 block text-xs font-semibold tracking-[0.12em] text-muted uppercase;
+  }
+
+  .admin-input {
+    @apply w-full rounded-md border border-navy/15 bg-white px-3 py-2 text-sm text-navy outline-none transition focus:border-gold focus:ring-2 focus:ring-gold/30;
+  }
+
+  .tiptap-editor {
+    @apply min-h-80 rounded-md border border-navy/15 bg-white px-4 py-3 text-base leading-relaxed text-navy outline-none;
+  }
+
+  .tiptap-editor p {
+    @apply mb-3;
+  }
+
+  .tiptap-editor h2 {
+    @apply mt-4 mb-2 text-2xl text-navy;
+    font-family: var(--font-display), Georgia, serif;
+  }
+
+  .tiptap-editor h3 {
+    @apply mt-3 mb-2 text-lg font-semibold text-navy;
+  }
+
+  .tiptap-editor ul {
+    @apply mb-3 list-disc pl-6;
+  }
+
+  .tiptap-editor ol {
+    @apply mb-3 list-decimal pl-6;
+  }
+
+  .tiptap-editor a {
+    @apply text-gold-dark underline;
+  }
+
+  .tiptap-editor p.is-editor-empty:first-child::before {
+    color: var(--color-muted);
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+  }
 }
 
 @layer utilities {

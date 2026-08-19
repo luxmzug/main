@@ -3,7 +3,7 @@ import { getAllPosts } from '@/lib/posts';
 import { getPostImagePath } from '@/lib/seo';
 import { navItems, siteConfig } from '@/lib/site';
 
-export const dynamic = 'force-static';
+export const dynamic = 'force-dynamic';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticRoutes = navItems.map((item) => {
@@ -30,7 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(post.date),
     changeFrequency: 'monthly' as const,
     priority: 0.85,
-    images: [`${siteConfig.url}${getPostImagePath(post.category)}`],
+    images: [`${siteConfig.url}${getPostImagePath(post)}`],
   }));
 
   return [...staticRoutes, ...legalRoutes, ...posts];

@@ -41,6 +41,10 @@ Thumbs.db
 .vercel
 local/
 *.db
+data/*.db
+data/*.db-*
+public/uploads/*
+!public/uploads/.gitkeep
 
 # Test / coverage artifacts
 coverage/

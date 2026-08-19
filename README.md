@@ -1,36 +1,36 @@
-# Luxusumzug Wien — static Next.js blog (luxusumzug.at)
+# Luxusumzug Wien — Next.js blog (luxusumzug.at)
 
 ## Stack
 
 - Next.js 16 (App Router) + TypeScript
 - Tailwind CSS v4
-- MDX blog posts (`content/blog/`)
-- Static export (`output: 'export'`)
-- Docker + Nginx on port **2009**
+- SQLite + Drizzle ORM (`data/luxusumzug.db`)
+- Session-based admin panel (`/admin/`)
+- Docker Node server on port **2009**
+
+Existing MDX files in `content/blog/` are imported once when the database is empty. After that, posts are edited in the admin UI.
 
 ## Quick start
 
 ```bash
 npm install
+cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:2009](http://localhost:2009).
+Open [http://localhost:2009](http://localhost:2009). Admin: [http://localhost:2009/admin/login/](http://localhost:2009/admin/login/).
 
-Copy environment template:
-
-```bash
-cp .env.example .env
-```
+`.env` must define `ADMIN_EMAIL`, `ADMIN_PASSWORD` (min. 12 characters) and `SESSION_SECRET` (min. 32 characters). Do not commit `.env`.
 
 ## Scripts
 
 | Command | Description |
 |---------|-------------|
 | `npm run dev` | Dev server on port 2009 |
-| `npm run build` | Static export to `out/` |
+| `npm run build` | Production build (standalone) |
+| `npm run start` | Start production server on port 2009 |
 | `npm run check:types` | TypeScript check |
-| `npm run clean` | Remove `.next` and `out` |
+| `npm run clean` | Remove `.next`, `out`, local db and uploads |
 
 ## Docker
 
@@ -40,21 +40,11 @@ docker compose up -d --build
 
 Site: [http://localhost:2009](http://localhost:2009)
 
+SQLite lives in `./data`, cover images in `./public/uploads`.
+
 ## Hero image
 
 Replace `public/images/hero-header.webp` with your own header photo (recommended ~2000px wide). Keep the same filename.
-
-Add posts as `.mdx` files in `content/blog/` with frontmatter:
-
-```yaml
----
-title: '...'
-description: '...'
-date: '2026-08-04'
-slug: 'mein-artikel'
-category: 'Ratgeber'
----
-```
 
 ## GitHub setup
 

@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { MDXRemote } from 'next-mdx-remote/rsc';
 import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { JsonLd } from '@/components/JsonLd';
 import { PostCard } from '@/components/PostCard';
 import { getAllPosts, getPostBySlug } from '@/lib/posts';
+import { parseSchemaJson, sanitizePostHtml } from '@/lib/sanitize';
 import {
   buildArticleJsonLd,
   getPostImagePath,
@@ -13,12 +13,10 @@ import {
 } from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 
+export const dynamic = 'force-dynamic';
+
 type BlogPostPageProps = {
   params: Promise<{ slug: string }>;
-};
-
-export const generateStaticParams = () => {
-  return getAllPosts().map((post) => ({ slug: post.slug }));
 };
 
 export const generateMetadata = async (props: BlogPostPageProps): Promise<Metadata> => {
@@ -30,7 +28,7 @@ export const generateMetadata = async (props: BlogPostPageProps): Promise<Metada
   }
 
   const url = `${siteConfig.url}/blog/${post.slug}/`;
-  const image = getPostImagePath(post.category);
+  const image = getPostImagePath(post);
 
   return {
     title: post.title,
@@ -91,6 +89,8 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
   }).format(new Date(post.date));
 
   const readingTime = getReadingTimeMinutes(post.content);
+  const customSchema = parseSchemaJson(post.schemaJson);
+  const cover = getPostImagePath(post);
 
   const related = getAllPosts()
     .filter((entry) => entry.slug !== post.slug)
@@ -99,6 +99,7 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
   return (
     <>
       <JsonLd data={buildArticleJsonLd(post)} />
+      {customSchema ? <JsonLd data={customSchema} /> : null}
       <article className="bg-cream" itemScope itemType="https://schema.org/BlogPosting">
         <meta content={post.title} itemProp="headline" />
         <meta content={post.description} itemProp="description" />
@@ -134,9 +135,20 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
             </p>
           </div>
         </div>
-        <div className="prose-blog px-4 py-12 md:px-6 md:py-16" itemProp="articleBody">
-          <MDXRemote source={post.content} />
+        <div className="mx-auto max-w-3xl px-4 pt-10 md:px-6">
+          <img
+            alt={post.title}
+            className="aspect-[16/9] w-full rounded-2xl object-cover shadow-[var(--shadow-card)]"
+            height={630}
+            src={cover}
+            width={1200}
+          />
         </div>
+        <div
+          className="prose-blog px-4 py-12 md:px-6 md:py-16"
+          dangerouslySetInnerHTML={{ __html: sanitizePostHtml(post.content) }}
+          itemProp="articleBody"
+        />
       </article>
 
       {related.length > 0 ? (

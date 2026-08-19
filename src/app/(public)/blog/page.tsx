@@ -6,6 +6,8 @@ import { getAllPosts } from '@/lib/posts';
 import { buildBlogIndexJsonLd } from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Ratgeber & Blog für Umzug in Wien',
   description:

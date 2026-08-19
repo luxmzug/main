@@ -3,7 +3,7 @@ import type { PostFrontmatter } from '@/lib/posts';
 import { getPostImagePath } from '@/lib/seo';
 
 export const PostCard = (props: { post: PostFrontmatter }) => {
-  const imageSrc = getPostImagePath(props.post.category);
+  const imageSrc = getPostImagePath(props.post);
 
   return (
     <article className="card-soft group flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lg">

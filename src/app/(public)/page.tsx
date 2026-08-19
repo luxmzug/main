@@ -9,6 +9,8 @@ import { getAllPosts } from '@/lib/posts';
 import { buildFaqJsonLd, buildHomeJsonLd } from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: {
     absolute: siteConfig.title,

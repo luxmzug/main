@@ -1,8 +1,6 @@
 import type React from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Montserrat, Playfair_Display } from 'next/font/google';
-import { SiteFooter } from '@/components/SiteFooter';
-import { SiteHeader } from '@/components/SiteHeader';
 import { siteConfig } from '@/lib/site';
 import '@/styles/global.css';
 
@@ -114,9 +112,7 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         >
           Zum Inhalt springen
         </a>
-        <SiteHeader />
-        <main id="main-content">{props.children}</main>
-        <SiteFooter />
+        {props.children}
       </body>
     </html>
   );
