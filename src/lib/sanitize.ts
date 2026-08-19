@@ -1,4 +1,5 @@
 import sanitizeHtml from 'sanitize-html';
+import { buildLinkRel } from '@/lib/link-rel';
 
 const allowedTags = [
   'p',
@@ -30,12 +31,16 @@ export const sanitizePostHtml = (html: string) => {
     allowedSchemes: ['http', 'https', 'mailto'],
     transformTags: {
       a: (tagName, attribs) => {
+        const nofollow = /\bnofollow\b/i.test(attribs.rel ?? '');
+        const newTab = attribs.target === '_blank';
+        const rel = buildLinkRel({ nofollow, newTab });
+
         return {
           tagName,
           attribs: {
             href: attribs.href ?? '',
-            rel: 'noopener noreferrer nofollow',
-            target: attribs.target === '_blank' ? '_blank' : attribs.target ?? '',
+            ...(rel ? { rel } : {}),
+            ...(newTab ? { target: '_blank' } : {}),
           },
         };
       },

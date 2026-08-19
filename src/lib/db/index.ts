@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS posts (
   content TEXT NOT NULL,
   category_id INTEGER NOT NULL REFERENCES categories(id),
   cover_image TEXT,
+  show_cover_on_detail INTEGER NOT NULL DEFAULT 0,
   schema_json TEXT,
   published_at TEXT NOT NULL,
   created_at TEXT NOT NULL,
@@ -56,28 +57,40 @@ type AppDb = ReturnType<typeof drizzle<typeof schema>>;
 let sqlite: Database.Database | undefined;
 let db: AppDb | undefined;
 
+const ensurePostColumns = (connection: Database.Database) => {
+  const cols = connection.prepare('PRAGMA table_info(posts)').all() as { name: string }[];
+  const names = new Set(cols.map((col) => col.name));
+  if (!names.has('show_cover_on_detail')) {
+    connection.exec(
+      'ALTER TABLE posts ADD COLUMN show_cover_on_detail INTEGER NOT NULL DEFAULT 0',
+    );
+  }
+};
+
 /**
  * Returns the shared SQLite/Drizzle connection, creating schema and seeding on first use.
  */
 export const getDb = (): AppDb => {
-  if (db) {
-    return db;
+  if (!sqlite) {
+    const env = getEnv();
+    const dbPath = path.isAbsolute(env.DATABASE_PATH)
+      ? env.DATABASE_PATH
+      : path.join(/* turbopackIgnore: true */ process.cwd(), env.DATABASE_PATH);
+
+    fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+
+    sqlite = new Database(dbPath);
+    sqlite.pragma('journal_mode = WAL');
+    sqlite.pragma('foreign_keys = ON');
+    sqlite.exec(CREATE_SQL);
   }
 
-  const env = getEnv();
-  const dbPath = path.isAbsolute(env.DATABASE_PATH)
-    ? env.DATABASE_PATH
-    : path.join(/* turbopackIgnore: true */ process.cwd(), env.DATABASE_PATH);
+  ensurePostColumns(sqlite);
 
-  fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-
-  sqlite = new Database(dbPath);
-  sqlite.pragma('journal_mode = WAL');
-  sqlite.pragma('foreign_keys = ON');
-  sqlite.exec(CREATE_SQL);
-
-  db = drizzle(sqlite, { schema });
-  seedIfEmpty(db);
+  if (!db) {
+    db = drizzle(sqlite, { schema });
+    seedIfEmpty(db);
+  }
 
   return db;
 };

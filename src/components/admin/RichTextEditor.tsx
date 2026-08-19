@@ -1,10 +1,14 @@
 'use client';
 
 import type React from 'react';
+import { useState } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import LinkMark from '@tiptap/extension-link';
 import Placeholder from '@tiptap/extension-placeholder';
+import { InternalPostPicker } from '@/components/admin/InternalPostPicker';
+import { buildLinkRel } from '@/lib/link-rel';
+import type { InternalLinkPost } from '@/lib/posts';
 
 const ToolbarButton = (props: {
   active?: boolean;
@@ -27,7 +31,15 @@ const ToolbarButton = (props: {
 export const RichTextEditor = (props: {
   initialHtml: string;
   onChange: (html: string) => void;
+  internalPosts: InternalLinkPost[];
 }) => {
+  const [linkOpen, setLinkOpen] = useState(false);
+  const [linkMode, setLinkMode] = useState<'external' | 'internal'>('external');
+  const [linkHref, setLinkHref] = useState('');
+  const [linkNofollow, setLinkNofollow] = useState(true);
+  const [linkNewTab, setLinkNewTab] = useState(false);
+  const [linkQuery, setLinkQuery] = useState('');
+
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -37,6 +49,9 @@ export const RichTextEditor = (props: {
       LinkMark.configure({
         openOnClick: false,
         autolink: true,
+        HTMLAttributes: {
+          rel: 'nofollow',
+        },
       }),
       Placeholder.configure({
         placeholder: 'Beitragstext schreiben…',
@@ -99,18 +114,218 @@ export const RichTextEditor = (props: {
           Zitat
         </ToolbarButton>
         <ToolbarButton
+          active={editor?.isActive('link')}
           onClick={() => {
-            const href = window.prompt('Link-URL');
-            if (!href) {
-              editor?.chain().focus().unsetLink().run();
-              return;
-            }
-            editor?.chain().focus().extendMarkRange('link').setLink({ href }).run();
+            const attrs = editor?.getAttributes('link') ?? {};
+            const href = typeof attrs.href === 'string' ? attrs.href : '';
+            const rel = typeof attrs.rel === 'string' ? attrs.rel : '';
+            const isInternal = href.startsWith('/blog/');
+            setLinkHref(href);
+            setLinkMode(isInternal ? 'internal' : 'external');
+            setLinkNofollow(isInternal ? false : rel === '' ? true : /\bnofollow\b/i.test(rel));
+            setLinkNewTab(isInternal ? false : attrs.target === '_blank');
+            setLinkQuery('');
+            setLinkOpen(true);
           }}
         >
           Link
         </ToolbarButton>
       </div>
+
+      {linkOpen ? (
+        <div className="mb-3 rounded-lg border border-navy/15 bg-cream p-4">
+          <p className="admin-label">Link einfügen</p>
+          <div className="mt-2 flex gap-2">
+            <button
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold ${
+                linkMode === 'external' ? 'bg-gold text-navy' : 'bg-navy/5 text-navy'
+              }`}
+              onClick={() => {
+                setLinkMode('external');
+                setLinkNofollow(true);
+              }}
+              type="button"
+            >
+              Externer Link
+            </button>
+            <button
+              className={`rounded-md px-3 py-1.5 text-xs font-semibold ${
+                linkMode === 'internal' ? 'bg-gold text-navy' : 'bg-navy/5 text-navy'
+              }`}
+              onClick={() => {
+                setLinkMode('internal');
+                setLinkNofollow(false);
+                setLinkNewTab(false);
+              }}
+              type="button"
+            >
+              Interner Link
+            </button>
+          </div>
+
+          <fieldset className="mt-3">
+            <legend className="mb-2 text-xs text-muted">SEO-Attribut</legend>
+            <div className="flex flex-wrap gap-4 text-sm text-navy">
+              <label className="flex items-center gap-2">
+                <input
+                  checked={!linkNofollow}
+                  name="link-follow"
+                  onChange={() => setLinkNofollow(false)}
+                  type="radio"
+                />
+                Dofollow
+              </label>
+              <label className="flex items-center gap-2">
+                <input
+                  checked={linkNofollow}
+                  name="link-follow"
+                  onChange={() => setLinkNofollow(true)}
+                  type="radio"
+                />
+                Nofollow
+              </label>
+            </div>
+            <p className="mt-1 text-xs text-muted">
+              Interne Links sind standardmäßig Dofollow. Externe Links standardmäßig Nofollow.
+            </p>
+          </fieldset>
+          <label className="mt-3 flex items-center gap-2 text-sm text-navy">
+            <input
+              checked={linkNewTab}
+              onChange={(event) => setLinkNewTab(event.target.checked)}
+              type="checkbox"
+            />
+            In neuem Tab öffnen
+          </label>
+
+          {linkMode === 'external' ? (
+            <label className="mt-3 block">
+              <span className="mb-1 block text-xs text-muted">URL (andere Blogs, Websites)</span>
+              <input
+                className="admin-input"
+                onChange={(event) => setLinkHref(event.target.value)}
+                placeholder="https://"
+                type="url"
+                value={linkHref}
+              />
+            </label>
+          ) : (
+            <InternalPostPicker
+              onQuery={setLinkQuery}
+              onSelect={(post) => {
+                const href = `/blog/${post.slug}/`;
+                const rel = buildLinkRel({ nofollow: linkNofollow, newTab: linkNewTab });
+                const selectionEmpty = editor?.state.selection.empty ?? true;
+                if (selectionEmpty) {
+                  editor
+                    ?.chain()
+                    .focus()
+                    .insertContent({
+                      type: 'text',
+                      text: post.title,
+                      marks: [
+                        {
+                          type: 'link',
+                          attrs: {
+                            href,
+                            target: linkNewTab ? '_blank' : null,
+                            rel: rel || null,
+                          },
+                        },
+                      ],
+                    })
+                    .run();
+                } else {
+                  editor
+                    ?.chain()
+                    .focus()
+                    .extendMarkRange('link')
+                    .setLink({
+                      href,
+                      target: linkNewTab ? '_blank' : null,
+                      rel: rel || null,
+                    })
+                    .run();
+                }
+                setLinkOpen(false);
+              }}
+              posts={props.internalPosts}
+              query={linkQuery}
+            />
+          )}
+
+          {linkMode === 'external' ? (
+            <div className="mt-4 flex flex-wrap gap-2">
+              <button
+                className="btn-gold !px-3 !py-2"
+                onClick={() => {
+                  const href = linkHref.trim();
+                  if (!href) {
+                    return;
+                  }
+                  const rel = buildLinkRel({ nofollow: linkNofollow, newTab: linkNewTab });
+                  editor
+                    ?.chain()
+                    .focus()
+                    .extendMarkRange('link')
+                    .setLink({
+                      href,
+                      target: linkNewTab ? '_blank' : null,
+                      rel: rel || null,
+                    })
+                    .run();
+                  setLinkOpen(false);
+                }}
+                type="button"
+              >
+                Link setzen
+              </button>
+              {editor?.isActive('link') ? (
+                <button
+                  className="btn-gold-outline !px-3 !py-2 !text-navy"
+                  onClick={() => {
+                    editor.chain().focus().unsetLink().run();
+                    setLinkOpen(false);
+                  }}
+                  type="button"
+                >
+                  Link entfernen
+                </button>
+              ) : null}
+              <button
+                className="rounded-md px-3 py-2 text-sm text-muted hover:text-navy"
+                onClick={() => setLinkOpen(false)}
+                type="button"
+              >
+                Abbrechen
+              </button>
+            </div>
+          ) : (
+            <div className="mt-4 flex flex-wrap gap-2">
+              {editor?.isActive('link') ? (
+                <button
+                  className="btn-gold-outline !px-3 !py-2 !text-navy"
+                  onClick={() => {
+                    editor.chain().focus().unsetLink().run();
+                    setLinkOpen(false);
+                  }}
+                  type="button"
+                >
+                  Link entfernen
+                </button>
+              ) : null}
+              <button
+                className="rounded-md px-3 py-2 text-sm text-muted hover:text-navy"
+                onClick={() => setLinkOpen(false)}
+                type="button"
+              >
+                Abbrechen
+              </button>
+            </div>
+          )}
+        </div>
+      ) : null}
+
       <EditorContent editor={editor} />
     </div>
   );

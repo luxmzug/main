@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { PostForm } from '@/components/admin/PostForm';
-import { getPostById, listCategories } from '@/lib/posts';
+import { getPostById, listCategories, listInternalLinkPosts } from '@/lib/posts';
 
 type EditPostPageProps = {
   params: Promise<{ id: string }>;
@@ -24,7 +24,11 @@ export default async function EditPostPage(props: EditPostPageProps) {
         Beitrag bearbeiten
       </h1>
       <div className="rounded-2xl border border-navy/10 bg-white p-6 md:p-8">
-        <PostForm categories={listCategories()} post={post} />
+        <PostForm
+          categories={listCategories()}
+          internalPosts={listInternalLinkPosts()}
+          post={post}
+        />
       </div>
     </>
   );

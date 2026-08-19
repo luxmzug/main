@@ -90,7 +90,6 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
 
   const readingTime = getReadingTimeMinutes(post.content);
   const customSchema = parseSchemaJson(post.schemaJson);
-  const cover = getPostImagePath(post);
 
   const related = getAllPosts()
     .filter((entry) => entry.slug !== post.slug)
@@ -135,15 +134,17 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
             </p>
           </div>
         </div>
-        <div className="mx-auto max-w-3xl px-4 pt-10 md:px-6">
-          <img
-            alt={post.title}
-            className="aspect-[16/9] w-full rounded-2xl object-cover shadow-[var(--shadow-card)]"
-            height={630}
-            src={cover}
-            width={1200}
-          />
-        </div>
+        {post.showCoverOnDetail ? (
+          <div className="mx-auto max-w-3xl px-4 pt-10 md:px-6">
+            <img
+              alt={post.title}
+              className="aspect-[16/9] w-full rounded-2xl object-cover shadow-[var(--shadow-card)]"
+              height={630}
+              src={getPostImagePath(post)}
+              width={1200}
+            />
+          </div>
+        ) : null}
         <div
           className="prose-blog px-4 py-12 md:px-6 md:py-16"
           dangerouslySetInnerHTML={{ __html: sanitizePostHtml(post.content) }}

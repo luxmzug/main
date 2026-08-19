@@ -11,6 +11,7 @@ export type PostFrontmatter = {
   slug: string;
   category: string;
   coverImage: string | null;
+  showCoverOnDetail: boolean;
   schemaJson: string | null;
 };
 
@@ -33,6 +34,7 @@ export type PostRecord = {
   categoryId: number;
   categoryName: string;
   coverImage: string | null;
+  showCoverOnDetail: boolean;
   schemaJson: string | null;
   publishedAt: string;
   createdAt: string;
@@ -51,6 +53,7 @@ const mapPost = (row: {
     slug: row.posts.slug,
     category: row.categories.name,
     coverImage: row.posts.coverImage,
+    showCoverOnDetail: row.posts.showCoverOnDetail,
     schemaJson: row.posts.schemaJson,
     content: row.posts.content,
   };
@@ -69,6 +72,7 @@ const mapRecord = (row: {
     categoryId: row.posts.categoryId,
     categoryName: row.categories.name,
     coverImage: row.posts.coverImage,
+    showCoverOnDetail: row.posts.showCoverOnDetail,
     schemaJson: row.posts.schemaJson,
     publishedAt: row.posts.publishedAt,
     createdAt: row.posts.createdAt,
@@ -139,6 +143,30 @@ export const listCategories = (): Category[] => {
   return getDb().select().from(categories).orderBy(asc(categories.name)).all();
 };
 
+export type InternalLinkPost = {
+  id: number;
+  title: string;
+  slug: string;
+  categoryName: string;
+};
+
+/**
+ * Returns compact post rows for the internal-link picker.
+ */
+export const listInternalLinkPosts = (): InternalLinkPost[] => {
+  return getDb()
+    .select({
+      id: posts.id,
+      title: posts.title,
+      slug: posts.slug,
+      categoryName: categories.name,
+    })
+    .from(posts)
+    .innerJoin(categories, eq(posts.categoryId, categories.id))
+    .orderBy(desc(posts.updatedAt))
+    .all();
+};
+
 /**
  * Creates a category or returns the existing one with the same name.
  */
@@ -179,6 +207,7 @@ export type UpsertPostInput = {
   content: string;
   categoryId: number;
   coverImage: string | null;
+  showCoverOnDetail: boolean;
   schemaJson: string | null;
   publishedAt: string;
 };

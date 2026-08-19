@@ -3,10 +3,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { RichTextEditor } from '@/components/admin/RichTextEditor';
-import type { Category, PostRecord } from '@/lib/posts';
+import { COVER_MAX_MB, COVER_RECOMMENDED_KB, coverImageError } from '@/lib/cover-image';
+import type { Category, InternalLinkPost, PostRecord } from '@/lib/posts';
 import { slugify } from '@/lib/slug';
 
-export const PostForm = (props: { post?: PostRecord; categories: Category[] }) => {
+export const PostForm = (props: {
+  post?: PostRecord;
+  categories: Category[];
+  internalPosts: InternalLinkPost[];
+}) => {
   const router = useRouter();
   const isNew = !props.post;
   const [title, setTitle] = useState(props.post?.title ?? '');
@@ -25,6 +30,7 @@ export const PostForm = (props: { post?: PostRecord; categories: Category[] }) =
   );
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
+  const [showCoverOnDetail, setShowCoverOnDetail] = useState(props.post?.showCoverOnDetail ?? true);
 
   return (
     <form
@@ -43,6 +49,14 @@ export const PostForm = (props: { post?: PostRecord; categories: Category[] }) =
           return;
         }
 
+        if (coverFile) {
+          const coverError = coverImageError(coverFile);
+          if (coverError) {
+            setError(coverError);
+            return;
+          }
+        }
+
         const body = new FormData();
         body.set('title', title);
         body.set('slug', slug);
@@ -51,6 +65,7 @@ export const PostForm = (props: { post?: PostRecord; categories: Category[] }) =
         body.set('categoryId', categoryId);
         body.set('publishedAt', publishedAt);
         body.set('schemaJson', schemaJson);
+        body.set('showCoverOnDetail', showCoverOnDetail ? '1' : '0');
         if (coverFile) {
           body.set('cover', coverFile);
         }
@@ -185,9 +200,34 @@ export const PostForm = (props: { post?: PostRecord; categories: Category[] }) =
 
       <label className="block">
         <span className="admin-label">
-          Titelbild {isNew ? '(Pflicht)' : '(optional – bestehendes Bild bleibt)'}
+          Titelbild {isNew ? '(Pflicht, nur WebP)' : '(optional – bestehendes Bild bleibt)'}
         </span>
-        <input accept="image/jpeg,image/png,image/webp" className="admin-input" name="cover" type="file" />
+        <input
+          accept="image/webp,.webp"
+          className="admin-input"
+          name="cover"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            if (!file) {
+              return;
+            }
+            const coverError = coverImageError(file);
+            setError(coverError ?? '');
+          }}
+          type="file"
+        />
+        <p className="mt-2 rounded-md border border-gold/40 bg-gold/10 px-3 py-2 text-xs leading-relaxed text-navy">
+          Nur <strong>.webp</strong>. Bitte eine Datei ohne Wasserzeichen verwenden
+          (unter {COVER_RECOMMENDED_KB} KB empfohlen, höchstens {COVER_MAX_MB} MB).
+        </p>
+        <label className="mt-3 flex items-center gap-2 text-sm text-navy">
+          <input
+            checked={showCoverOnDetail}
+            onChange={(event) => setShowCoverOnDetail(event.target.checked)}
+            type="checkbox"
+          />
+          Titelbild auf der Beitragsseite anzeigen
+        </label>
         {props.post?.coverImage ? (
           <img
             alt="Aktuelles Titelbild"
@@ -215,7 +255,11 @@ export const PostForm = (props: { post?: PostRecord; categories: Category[] }) =
 
       <div>
         <span className="admin-label">Inhalt</span>
-        <RichTextEditor initialHtml={props.post?.content ?? '<p></p>'} onChange={setContent} />
+        <RichTextEditor
+          initialHtml={props.post?.content ?? '<p></p>'}
+          internalPosts={props.internalPosts.filter((post) => post.id !== props.post?.id)}
+          onChange={setContent}
+        />
       </div>
 
       <label className="block">

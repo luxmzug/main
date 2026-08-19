@@ -16,6 +16,7 @@ const postSchema = z.object({
   categoryId: z.coerce.number().int().positive(),
   publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Datum muss JJJJ-MM-TT sein.'),
   schemaJson: z.string().max(50_000).optional().default(''),
+  showCoverOnDetail: z.enum(['0', '1']).optional().default('0'),
 });
 
 /**
@@ -30,6 +31,7 @@ export const parsePostForm = async (form: FormData, options: { coverRequired: bo
     categoryId: String(form.get('categoryId') ?? ''),
     publishedAt: String(form.get('publishedAt') ?? ''),
     schemaJson: String(form.get('schemaJson') ?? ''),
+    showCoverOnDetail: form.get('showCoverOnDetail') === '1' ? '1' : '0',
   });
 
   const cover = form.get('cover');
@@ -50,5 +52,6 @@ export const parsePostForm = async (form: FormData, options: { coverRequired: bo
     publishedAt: parsed.publishedAt,
     schemaJson,
     coverImage,
+    showCoverOnDetail: parsed.showCoverOnDetail === '1',
   };
 };
