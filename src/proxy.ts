@@ -16,7 +16,7 @@ const isLoginPath = (pathname: string) => {
  */
 export const proxy = (request: NextRequest) => {
   const { pathname } = request.nextUrl;
-  if (isLoginPath(pathname)) {
+  if (isLoginPath(pathname) || pathname.startsWith('/api/')) {
     return NextResponse.next();
   }
 
@@ -25,13 +25,9 @@ export const proxy = (request: NextRequest) => {
     return NextResponse.redirect(new URL('/admin/login/', request.url));
   }
 
-  if (pathname.startsWith('/api/admin') && !hasCookie) {
-    return NextResponse.json({ error: 'Nicht angemeldet.' }, { status: 401 });
-  }
-
   return NextResponse.next();
 };
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/admin/:path*'],
 };

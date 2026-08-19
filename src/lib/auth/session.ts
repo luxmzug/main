@@ -4,6 +4,7 @@ import { cookies, headers } from 'next/headers';
 import { getEnv } from '@/lib/Env';
 import { SESSION_COOKIE, SESSION_TTL_SEC } from '@/lib/auth/constants';
 import { hashClientBinding, hmacSha256, randomToken, safeEqual, sha256 } from '@/lib/auth/crypto';
+import { normalizeIp } from '@/lib/auth/request';
 import { getDb } from '@/lib/db';
 import { sessions } from '@/lib/db/schema';
 
@@ -136,12 +137,14 @@ export const readSession = (cookieValue: string | undefined, ip: string, userAge
     return null;
   }
 
-  if (
-    !safeEqual(row.ipHash, hashClientBinding(ip)) ||
-    !safeEqual(row.uaHash, hashClientBinding(userAgent))
-  ) {
+  if (!safeEqual(row.uaHash, hashClientBinding(userAgent))) {
     destroySessionByHash(row.tokenHash);
     return null;
+  }
+
+  const nextIpHash = hashClientBinding(normalizeIp(ip));
+  if (!safeEqual(row.ipHash, nextIpHash)) {
+    getDb().update(sessions).set({ ipHash: nextIpHash }).where(eq(sessions.id, row.id)).run();
   }
 
   getDb()
@@ -162,11 +165,16 @@ const ipFromHeaders = (headerList: Awaited<ReturnType<typeof headers>>) => {
   if (forwarded) {
     const first = forwarded.split(',')[0]?.trim();
     if (first) {
-      return first.slice(0, 64);
+      return normalizeIp(first.slice(0, 64));
     }
   }
 
-  return headerList.get('x-real-ip')?.trim() || '127.0.0.1';
+  const realIp = headerList.get('x-real-ip')?.trim();
+  if (realIp) {
+    return normalizeIp(realIp.slice(0, 64));
+  }
+
+  return '127.0.0.1';
 };
 
 /**

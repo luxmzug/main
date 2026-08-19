@@ -17,6 +17,7 @@ export const posts = sqliteTable('posts', {
     .notNull()
     .references(() => categories.id),
   coverImage: text('cover_image'),
+  coverAlt: text('cover_alt'),
   showCoverOnDetail: integer('show_cover_on_detail', { mode: 'boolean' }).notNull().default(false),
   schemaJson: text('schema_json'),
   publishedAt: text('published_at').notNull(),

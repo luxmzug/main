@@ -3,7 +3,7 @@ import path from 'node:path';
 import { randomBytes } from 'node:crypto';
 import { COVER_MAX_BYTES, COVER_MAX_MB } from '@/lib/cover-image';
 
-const uploadsDir = path.join(/* turbopackIgnore: true */ process.cwd(), 'public/uploads');
+export const uploadsDir = path.join(/* turbopackIgnore: true */ process.cwd(), 'data/uploads');
 
 const isWebp = (bytes: Buffer) => {
   return (

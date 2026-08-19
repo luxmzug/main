@@ -11,6 +11,7 @@ export type PostFrontmatter = {
   slug: string;
   category: string;
   coverImage: string | null;
+  coverAlt: string | null;
   showCoverOnDetail: boolean;
   schemaJson: string | null;
 };
@@ -34,6 +35,7 @@ export type PostRecord = {
   categoryId: number;
   categoryName: string;
   coverImage: string | null;
+  coverAlt: string | null;
   showCoverOnDetail: boolean;
   schemaJson: string | null;
   publishedAt: string;
@@ -53,6 +55,7 @@ const mapPost = (row: {
     slug: row.posts.slug,
     category: row.categories.name,
     coverImage: row.posts.coverImage,
+    coverAlt: row.posts.coverAlt,
     showCoverOnDetail: row.posts.showCoverOnDetail,
     schemaJson: row.posts.schemaJson,
     content: row.posts.content,
@@ -72,6 +75,7 @@ const mapRecord = (row: {
     categoryId: row.posts.categoryId,
     categoryName: row.categories.name,
     coverImage: row.posts.coverImage,
+    coverAlt: row.posts.coverAlt,
     showCoverOnDetail: row.posts.showCoverOnDetail,
     schemaJson: row.posts.schemaJson,
     publishedAt: row.posts.publishedAt,
@@ -207,6 +211,7 @@ export type UpsertPostInput = {
   content: string;
   categoryId: number;
   coverImage: string | null;
+  coverAlt: string | null;
   showCoverOnDetail: boolean;
   schemaJson: string | null;
   publishedAt: string;

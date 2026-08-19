@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS posts (
   content TEXT NOT NULL,
   category_id INTEGER NOT NULL REFERENCES categories(id),
   cover_image TEXT,
+  cover_alt TEXT,
   show_cover_on_detail INTEGER NOT NULL DEFAULT 0,
   schema_json TEXT,
   published_at TEXT NOT NULL,
@@ -64,6 +65,9 @@ const ensurePostColumns = (connection: Database.Database) => {
     connection.exec(
       'ALTER TABLE posts ADD COLUMN show_cover_on_detail INTEGER NOT NULL DEFAULT 0',
     );
+  }
+  if (!names.has('cover_alt')) {
+    connection.exec('ALTER TABLE posts ADD COLUMN cover_alt TEXT');
   }
 };
 

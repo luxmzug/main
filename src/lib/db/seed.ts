@@ -62,6 +62,7 @@ export const seedIfEmpty = (db: AppDb) => {
         content: html,
         categoryId: category.id,
         coverImage: null,
+        coverAlt: null,
         showCoverOnDetail: false,
         schemaJson: null,
         publishedAt: date,

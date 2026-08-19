@@ -17,6 +17,7 @@ const postSchema = z.object({
   publishedAt: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Datum muss JJJJ-MM-TT sein.'),
   schemaJson: z.string().max(50_000).optional().default(''),
   showCoverOnDetail: z.enum(['0', '1']).optional().default('0'),
+  coverAlt: z.string().trim().max(180).optional().default(''),
 });
 
 /**
@@ -32,12 +33,17 @@ export const parsePostForm = async (form: FormData, options: { coverRequired: bo
     publishedAt: String(form.get('publishedAt') ?? ''),
     schemaJson: String(form.get('schemaJson') ?? ''),
     showCoverOnDetail: form.get('showCoverOnDetail') === '1' ? '1' : '0',
+    coverAlt: String(form.get('coverAlt') ?? ''),
   });
 
   const cover = form.get('cover');
   const file = cover instanceof File && cover.size > 0 ? cover : null;
   if (options.coverRequired && !file) {
     throw new Error('Ein Titelbild ist für neue Beiträge Pflicht.');
+  }
+
+  if ((options.coverRequired || file) && parsed.coverAlt.length < 3) {
+    throw new Error('Bitte einen Alt-Text für das Titelbild angeben.');
   }
 
   const coverImage = file ? await saveCoverImage(file) : null;
@@ -52,6 +58,7 @@ export const parsePostForm = async (form: FormData, options: { coverRequired: bo
     publishedAt: parsed.publishedAt,
     schemaJson,
     coverImage,
+    coverAlt: parsed.coverAlt.length > 0 ? parsed.coverAlt : null,
     showCoverOnDetail: parsed.showCoverOnDetail === '1',
   };
 };

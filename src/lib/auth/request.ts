@@ -6,16 +6,27 @@ export const getClientIp = (request: Request) => {
   if (forwarded) {
     const first = forwarded.split(',')[0]?.trim();
     if (first) {
-      return first.slice(0, 64);
+      return normalizeIp(first.slice(0, 64));
     }
   }
 
   const realIp = request.headers.get('x-real-ip')?.trim();
   if (realIp) {
-    return realIp.slice(0, 64);
+    return normalizeIp(realIp.slice(0, 64));
   }
 
   return '127.0.0.1';
+};
+
+/**
+ * Treats IPv4/IPv6 loopback as the same client.
+ */
+export const normalizeIp = (ip: string) => {
+  if (ip === '::1' || ip === '::ffff:127.0.0.1') {
+    return '127.0.0.1';
+  }
+
+  return ip;
 };
 
 /**

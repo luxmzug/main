@@ -5,7 +5,7 @@ export const runtime = 'nodejs';
 
 export const POST = async (request: Request) => {
   try {
-    const { session } = requireAdminApi(request);
+    const { session } = await requireAdminApi(request);
     return applySessionRotation(NextResponse.json({ ok: true }), session);
   } catch (error) {
     return adminErrorResponse(error);

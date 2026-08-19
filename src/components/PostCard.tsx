@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import type { PostFrontmatter } from '@/lib/posts';
-import { getPostImagePath } from '@/lib/seo';
+import { getPostImageAlt, getPostImagePath } from '@/lib/seo';
 
 export const PostCard = (props: { post: PostFrontmatter }) => {
   const imageSrc = getPostImagePath(props.post);
@@ -9,7 +9,7 @@ export const PostCard = (props: { post: PostFrontmatter }) => {
     <article className="card-soft group flex h-full flex-col overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lg">
       <Link className="block overflow-hidden" href={`/blog/${props.post.slug}/`}>
         <img
-          alt={`Beitragsbild: ${props.post.title}`}
+          alt={getPostImageAlt(props.post)}
           className="aspect-[16/10] w-full object-cover transition duration-700 group-hover:scale-[1.03]"
           height={420}
           loading="lazy"

@@ -31,6 +31,7 @@ export const PostForm = (props: {
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
   const [showCoverOnDetail, setShowCoverOnDetail] = useState(props.post?.showCoverOnDetail ?? true);
+  const [coverAlt, setCoverAlt] = useState(props.post?.coverAlt ?? '');
 
   return (
     <form
@@ -57,6 +58,11 @@ export const PostForm = (props: {
           }
         }
 
+        if ((isNew || coverFile) && coverAlt.trim().length < 3) {
+          setError('Bitte einen Alt-Text für das Titelbild angeben.');
+          return;
+        }
+
         const body = new FormData();
         body.set('title', title);
         body.set('slug', slug);
@@ -66,6 +72,7 @@ export const PostForm = (props: {
         body.set('publishedAt', publishedAt);
         body.set('schemaJson', schemaJson);
         body.set('showCoverOnDetail', showCoverOnDetail ? '1' : '0');
+        body.set('coverAlt', coverAlt);
         if (coverFile) {
           body.set('cover', coverFile);
         }
@@ -73,7 +80,7 @@ export const PostForm = (props: {
         setPending(true);
         setError('');
         const endpoint = isNew ? '/api/admin/posts/' : `/api/admin/posts/${props.post?.id}/`;
-        void fetch(endpoint, { method: isNew ? 'POST' : 'PUT', body })
+        void fetch(endpoint, { method: isNew ? 'POST' : 'PUT', body, credentials: 'include' })
           .then(async (response) => {
             const payload = (await response.json()) as { error?: string };
             if (!response.ok) {
@@ -155,6 +162,7 @@ export const PostForm = (props: {
                 }
                 void fetch('/api/admin/categories/', {
                   method: 'POST',
+                  credentials: 'include',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({ name: newCategory }),
                 })
@@ -198,7 +206,7 @@ export const PostForm = (props: {
         <span className="mt-1 block text-xs text-muted">{description.length}/320 Zeichen</span>
       </label>
 
-      <label className="block">
+      <div>
         <span className="admin-label">
           Titelbild {isNew ? '(Pflicht, nur WebP)' : '(optional – bestehendes Bild bleibt)'}
         </span>
@@ -220,6 +228,17 @@ export const PostForm = (props: {
           Nur <strong>.webp</strong>. Bitte eine Datei ohne Wasserzeichen verwenden
           (unter {COVER_RECOMMENDED_KB} KB empfohlen, höchstens {COVER_MAX_MB} MB).
         </p>
+        <label className="mt-3 block">
+          <span className="admin-label">Bild-Alt-Text</span>
+          <input
+            className="admin-input"
+            maxLength={180}
+            onChange={(event) => setCoverAlt(event.target.value)}
+            placeholder="Kurze Beschreibung des Bildes"
+            type="text"
+            value={coverAlt}
+          />
+        </label>
         <label className="mt-3 flex items-center gap-2 text-sm text-navy">
           <input
             checked={showCoverOnDetail}
@@ -230,7 +249,7 @@ export const PostForm = (props: {
         </label>
         {props.post?.coverImage ? (
           <img
-            alt="Aktuelles Titelbild"
+            alt={coverAlt || 'Aktuelles Titelbild'}
             className="mt-3 max-h-40 rounded-md object-cover"
             src={props.post.coverImage}
           />
@@ -239,7 +258,7 @@ export const PostForm = (props: {
             Bestehende Beiträge ohne eigenes Titelbild behalten die Kategorie-Grafik.
           </p>
         )}
-      </label>
+      </div>
 
       <label className="block">
         <span className="admin-label">Veröffentlichungsdatum</span>

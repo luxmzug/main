@@ -25,7 +25,7 @@ const parseId = async (props: RouteProps) => {
 
 export const PUT = async (request: Request, props: RouteProps) => {
   try {
-    const { session } = requireAdminApi(request);
+    const { session } = await requireAdminApi(request);
     const id = await parseId(props);
     const existing = getPostById(id);
     if (!existing) {
@@ -54,7 +54,7 @@ export const PUT = async (request: Request, props: RouteProps) => {
 
 export const DELETE = async (request: Request, props: RouteProps) => {
   try {
-    const { session } = requireAdminApi(request);
+    const { session } = await requireAdminApi(request);
     const id = await parseId(props);
     const existing = getPostById(id);
     if (!existing) {

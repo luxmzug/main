@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   reactCompiler: process.env.NODE_ENV === 'production',
   trailingSlash: true,
   serverExternalPackages: ['better-sqlite3'],
+  experimental: {
+    proxyClientMaxBodySize: '10mb',
+  },
   images: {
     unoptimized: true,
   },

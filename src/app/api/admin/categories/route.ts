@@ -11,7 +11,7 @@ const categorySchema = z.object({
 
 export const POST = async (request: Request) => {
   try {
-    const { session } = requireAdminApi(request);
+    const { session } = await requireAdminApi(request);
     const body: unknown = await request.json();
     const parsed = categorySchema.parse(body);
     const category = createCategory(parsed.name);

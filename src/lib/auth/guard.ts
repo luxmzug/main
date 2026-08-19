@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
 import { ZodError } from 'zod';
 import { consumeAdminApi } from '@/lib/auth/rate-limit';
 import { assertSameOrigin, getClientIp, getUserAgent } from '@/lib/auth/request';
@@ -29,7 +30,7 @@ const cookieFromRequest = (request: Request) => {
 /**
  * Authenticates an admin API request, rate-limits it, and checks same-origin on mutations.
  */
-export const requireAdminApi = (request: Request) => {
+export const requireAdminApi = async (request: Request) => {
   const ip = getClientIp(request);
   const limited = consumeAdminApi(ip);
   if (!limited.ok) {
@@ -42,7 +43,12 @@ export const requireAdminApi = (request: Request) => {
     assertSameOrigin(request);
   }
 
-  const session = readSession(cookieFromRequest(request), ip, getUserAgent(request));
+  const jar = await cookies();
+  const session = readSession(
+    jar.get(SESSION_COOKIE)?.value ?? cookieFromRequest(request),
+    ip,
+    getUserAgent(request),
+  );
   if (!session) {
     throw new AdminHttpError('Nicht angemeldet.', 401);
   }

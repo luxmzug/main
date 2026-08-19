@@ -8,6 +8,7 @@ import { getAllPosts, getPostBySlug } from '@/lib/posts';
 import { parseSchemaJson, sanitizePostHtml } from '@/lib/sanitize';
 import {
   buildArticleJsonLd,
+  getPostImageAlt,
   getPostImagePath,
   getReadingTimeMinutes,
 } from '@/lib/seo';
@@ -55,7 +56,7 @@ export const generateMetadata = async (props: BlogPostPageProps): Promise<Metada
           url: image,
           width: 1200,
           height: 630,
-          alt: post.title,
+          alt: getPostImageAlt(post),
         },
       ],
     },
@@ -137,7 +138,7 @@ export default async function BlogPostPage(props: BlogPostPageProps) {
         {post.showCoverOnDetail ? (
           <div className="mx-auto max-w-3xl px-4 pt-10 md:px-6">
             <img
-              alt={post.title}
+              alt={getPostImageAlt(post)}
               className="aspect-[16/9] w-full rounded-2xl object-cover shadow-[var(--shadow-card)]"
               height={630}
               src={getPostImagePath(post)}

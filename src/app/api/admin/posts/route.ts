@@ -12,7 +12,7 @@ export const runtime = 'nodejs';
 
 export const POST = async (request: Request) => {
   try {
-    const { session } = requireAdminApi(request);
+    const { session } = await requireAdminApi(request);
     const form = await request.formData();
     const input = await parsePostForm(form, { coverRequired: true });
 

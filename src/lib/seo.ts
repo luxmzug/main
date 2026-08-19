@@ -21,6 +21,14 @@ export const getPostImagePath = (post: { category: string; coverImage?: string |
 };
 
 /**
+ * Uses the editor-supplied alt text, otherwise the post title.
+ */
+export const getPostImageAlt = (post: { title: string; coverAlt?: string | null }) => {
+  const alt = post.coverAlt?.trim();
+  return alt && alt.length > 0 ? alt : `Beitragsbild: ${post.title}`;
+};
+
+/**
  * Strips tags so HTML posts still yield a readable word count.
  */
 const plainText = (content: string) => {
