@@ -40,7 +40,7 @@ export const RichTextEditor = (props: {
   onChange: (html: string) => void;
   internalPosts: InternalLinkPost[];
 }) => {
-  const [mode, setMode] = useState<'visual' | 'html'>('html');
+  const [mode, setMode] = useState<'visual' | 'html'>('visual');
   const [html, setHtml] = useState(toSourceHtml(props.initialHtml));
   const [linkOpen, setLinkOpen] = useState(false);
   const [linkMode, setLinkMode] = useState<'external' | 'internal'>('external');
