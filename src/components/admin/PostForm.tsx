@@ -273,7 +273,7 @@ export const PostForm = (props: {
       </label>
 
       <div>
-        <span className="admin-label">Inhalt</span>
+        <span className="admin-label">Inhalt (HTML)</span>
         <RichTextEditor
           initialHtml={props.post?.content ?? '<p></p>'}
           internalPosts={props.internalPosts.filter((post) => post.id !== props.post?.id)}
@@ -282,7 +282,7 @@ export const PostForm = (props: {
       </div>
 
       <label className="block">
-        <span className="admin-label">Schema Markup (JSON-LD, optional)</span>
+        <span className="admin-label">Schema Markup (JSON-LD, optional, separat)</span>
         <textarea
           className="admin-input min-h-40 font-mono text-xs"
           name="schemaJson"
@@ -290,6 +290,9 @@ export const PostForm = (props: {
           placeholder='{"@context":"https://schema.org","@type":"FAQPage"}'
           value={schemaJson}
         />
+        <span className="mt-1 block text-xs text-muted">
+          JSON-LD hier einfügen, nicht in den HTML-Inhalt.
+        </span>
       </label>
 
       {error ? <p className="text-sm text-red-700">{error}</p> : null}

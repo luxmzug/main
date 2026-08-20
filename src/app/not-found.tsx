@@ -1,11 +1,14 @@
 import Link from 'next/link';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { getSession } from '@/lib/auth/session';
 
-export default function NotFoundPage() {
+export default async function NotFoundPage() {
+  const session = await getSession();
+
   return (
     <>
-      <SiteHeader />
+      <SiteHeader isAdmin={Boolean(session)} />
       <main className="flex min-h-[60vh] flex-col items-center justify-center bg-cream px-6 py-24 text-center" id="main-content">
         <h1 className="text-4xl text-navy" style={{ fontFamily: 'var(--font-display)' }}>
           Seite nicht gefunden

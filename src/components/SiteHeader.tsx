@@ -4,7 +4,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { navItems, siteConfig } from '@/lib/site';
 
-export const SiteHeader = () => {
+/**
+ * Public site header. Shows an Admin shortcut only for an active session.
+ */
+export const SiteHeader = (props: { isAdmin?: boolean }) => {
   const [open, setOpen] = useState(false);
 
   return (
@@ -48,6 +51,11 @@ export const SiteHeader = () => {
               {item.label}
             </Link>
           ))}
+          {props.isAdmin ? (
+            <Link className="btn-gold-outline ml-2 !px-3 !py-2 !text-xs" href="/admin/">
+              Admin
+            </Link>
+          ) : null}
         </nav>
 
         <button
@@ -81,6 +89,15 @@ export const SiteHeader = () => {
                 {item.label}
               </Link>
             ))}
+            {props.isAdmin ? (
+              <Link
+                className="py-3 text-sm font-semibold text-gold"
+                href="/admin/"
+                onClick={() => setOpen(false)}
+              >
+                Admin
+              </Link>
+            ) : null}
           </nav>
         </div>
       ) : null}
