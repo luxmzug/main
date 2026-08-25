@@ -13,7 +13,7 @@ export const SiteHeader = (props: { isAdmin?: boolean }) => {
   return (
     <header className="sticky top-0 z-50 text-white shadow-md" style={{ backgroundColor: '#132840' }}>
       <div className="mx-auto flex h-16 max-w-7xl items-stretch justify-between gap-4 px-3 md:h-20 md:px-5 lg:px-7">
-        <Link className="flex shrink-0 items-stretch self-stretch" href="/" onClick={() => setOpen(false)}>
+        <Link className="flex shrink-0 items-stretch self-stretch pb-1.5" href="/" onClick={() => setOpen(false)}>
           <img
             alt={siteConfig.name}
             className="h-full w-auto max-w-[min(72vw,22rem)] object-contain object-left md:max-w-[26rem]"
