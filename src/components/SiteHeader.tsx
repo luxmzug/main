@@ -13,32 +13,14 @@ export const SiteHeader = (props: { isAdmin?: boolean }) => {
   return (
     <header className="sticky top-0 z-50 bg-navy text-white shadow-md">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 md:px-6 lg:px-8">
-        <Link className="flex min-w-0 items-center gap-3" href="/" onClick={() => setOpen(false)}>
-          <span className="flex size-11 shrink-0 items-center justify-center rounded-md bg-gold/15 ring-1 ring-gold/40">
-            <svg aria-hidden="true" className="size-7 text-gold" fill="none" viewBox="0 0 32 32">
-              <path
-                d="M4 22h24l-2-8H12l-2 3H6l-2 5Z"
-                stroke="currentColor"
-                strokeLinejoin="round"
-                strokeWidth="1.6"
-              />
-              <path d="M8 14V9h4v3" stroke="currentColor" strokeWidth="1.6" />
-              <circle cx="10" cy="23.5" fill="currentColor" r="1.6" />
-              <circle cx="23" cy="23.5" fill="currentColor" r="1.6" />
-              <path d="M16 6l1.2 2.4L20 9l-2.2 1.6.6 2.6L16 11.8 13.6 13.2l.6-2.6L12 9l2.8-.6L16 6Z" fill="currentColor" />
-            </svg>
-          </span>
-          <span className="min-w-0">
-            <span
-              className="block truncate text-lg font-semibold tracking-[0.08em] text-gold uppercase md:text-xl"
-              style={{ fontFamily: 'var(--font-display)' }}
-            >
-              {siteConfig.name}
-            </span>
-            <span className="hidden text-[10px] tracking-[0.18em] text-white/70 uppercase sm:block">
-              {siteConfig.tagline}
-            </span>
-          </span>
+        <Link className="flex shrink-0 items-center" href="/" onClick={() => setOpen(false)}>
+          <img
+            alt={siteConfig.name}
+            className="h-10 w-auto md:h-12"
+            height={48}
+            src="/images/lxmzg.webp"
+            width={220}
+          />
         </Link>
 
         <nav aria-label="Hauptnavigation" className="hidden items-center gap-1 xl:flex">
