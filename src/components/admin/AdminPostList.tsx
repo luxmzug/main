@@ -24,6 +24,8 @@ export const AdminPostList = (props: { posts: PostRecord[] }) => {
   const [pendingId, setPendingId] = useState<number | null>(null);
   const [rescheduleId, setRescheduleId] = useState<number | null>(null);
   const [rescheduleValue, setRescheduleValue] = useState('');
+  const [migrateMessage, setMigrateMessage] = useState('');
+  const [migratePending, setMigratePending] = useState(false);
 
   const filtered =
     tab === 'all' ? props.posts : props.posts.filter((post) => post.status === tab);
@@ -34,6 +36,62 @@ export const AdminPostList = (props: { posts: PostRecord[] }) => {
 
   return (
     <>
+      <div className="mb-6 rounded-xl border border-navy/10 bg-white p-4">
+        <p className="text-sm font-semibold text-navy">Bestehende Beiträge in Warteschlange</p>
+        <p className="mt-1 text-xs leading-relaxed text-muted">
+          Einmalig ausführen: Google-indexierte Beiträge bleiben veröffentlicht, alle anderen
+          published-Beiträge werden auf 7 pro Tag verteilt.
+        </p>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <button
+            className="btn-gold-outline !px-3 !py-2 !text-xs !text-navy"
+            disabled={migratePending}
+            onClick={() => {
+              if (
+                !window.confirm(
+                  'Alle nicht ausgeschlossenen veröffentlichten Beiträge in die Warteschlange legen?',
+                )
+              ) {
+                return;
+              }
+              setMigratePending(true);
+              setMigrateMessage('');
+              void fetch('/api/admin/queue/migrate/', {
+                method: 'POST',
+                credentials: 'include',
+              })
+                .then(async (response) => {
+                  const payload = (await response.json()) as {
+                    error?: string;
+                    scheduled?: { length: number }[];
+                    excluded?: { length: number }[];
+                  };
+                  if (!response.ok) {
+                    setMigrateMessage(payload.error ?? 'Migration fehlgeschlagen.');
+                    return;
+                  }
+                  const scheduledCount = payload.scheduled?.length ?? 0;
+                  const excludedCount = payload.excluded?.length ?? 0;
+                  setMigrateMessage(
+                    `${scheduledCount} Beiträge eingeplant, ${excludedCount} ausgeschlossen.`,
+                  );
+                  router.refresh();
+                })
+                .catch(() => {
+                  setMigrateMessage('Migration fehlgeschlagen.');
+                })
+                .finally(() => {
+                  setMigratePending(false);
+                });
+            }}
+            type="button"
+          >
+            {migratePending ? 'Läuft…' : 'Migration starten'}
+          </button>
+          {migrateMessage ? <span className="text-xs text-muted">{migrateMessage}</span> : null}
+        </div>
+      </div>
+
       <div className="mb-4 flex flex-wrap gap-2">
         {tabs.map((entry) => (
           <button
