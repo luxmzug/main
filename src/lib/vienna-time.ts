@@ -20,40 +20,60 @@ export const viennaYmd = (date: Date) => {
 };
 
 /**
+ * Reads Vienna local parts from a UTC timestamp.
+ */
+const viennaParts = (utcMs: number) => {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: VIENNA_TZ,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).formatToParts(new Date(utcMs));
+
+  let hour = Number(parts.find((part) => part.type === 'hour')?.value);
+  if (hour === 24) {
+    hour = 0;
+  }
+
+  return {
+    year: Number(parts.find((part) => part.type === 'year')?.value),
+    month: Number(parts.find((part) => part.type === 'month')?.value),
+    day: Number(parts.find((part) => part.type === 'day')?.value),
+    hour,
+    minute: Number(parts.find((part) => part.type === 'minute')?.value),
+  };
+};
+
+/**
  * Converts a Vienna local date/time to a UTC ISO string.
  */
 export const viennaLocalToUtcIso = (ymd: string, hour: number, minute: number) => {
-  const parts = ymd.split('-').map(Number);
-  const year = parts[0] ?? 2026;
-  const month = parts[1] ?? 1;
-  const day = parts[2] ?? 1;
-  let utc = Date.UTC(year, month - 1, day, hour - 1, minute);
+  const dateOnly = ymd.trim().slice(0, 10);
+  const segments = dateOnly.split('-').map(Number);
+  const year = segments[0] ?? 2026;
+  const month = segments[1] ?? 1;
+  const day = segments[2] ?? 1;
+  const center = Date.UTC(year, month - 1, day, 12, 0, 0);
 
-  for (let step = 0; step < 240; step += 1) {
-    const parts = new Intl.DateTimeFormat('en-GB', {
-      timeZone: VIENNA_TZ,
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false,
-    }).formatToParts(new Date(utc));
+  for (let offset = -840; offset <= 840; offset += 1) {
+    const utc = center + offset * 60_000;
+    const local = viennaParts(utc);
 
-    const py = Number(parts.find((part) => part.type === 'year')?.value);
-    const pm = Number(parts.find((part) => part.type === 'month')?.value);
-    const pd = Number(parts.find((part) => part.type === 'day')?.value);
-    const ph = Number(parts.find((part) => part.type === 'hour')?.value);
-    const pmin = Number(parts.find((part) => part.type === 'minute')?.value);
-
-    if (py === year && pm === month && pd === day && ph === hour && pmin === minute) {
+    if (
+      local.year === year &&
+      local.month === month &&
+      local.day === day &&
+      local.hour === hour &&
+      local.minute === minute
+    ) {
       return new Date(utc).toISOString();
     }
-
-    utc += 60_000;
   }
 
-  throw new Error(`Konnte Vienna-Zeit nicht auflösen: ${ymd} ${hour}:${minute}`);
+  return new Date(Date.UTC(year, month - 1, day, Math.max(0, hour - 2), minute, 0)).toISOString();
 };
 
 /**

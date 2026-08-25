@@ -51,7 +51,6 @@ CREATE TABLE IF NOT EXISTS login_attempts (
 );
 
 CREATE INDEX IF NOT EXISTS idx_posts_slug ON posts(slug);
-CREATE INDEX IF NOT EXISTS idx_posts_status_published ON posts(status, published_at);
 CREATE INDEX IF NOT EXISTS idx_sessions_token ON sessions(token_hash);
 CREATE INDEX IF NOT EXISTS idx_login_ip_time ON login_attempts(ip_hash, attempted_at);
 `;
@@ -90,9 +89,18 @@ const ensurePostColumns = (connection: Database.Database) => {
   if (legacyDates.length > 0) {
     const update = connection.prepare('UPDATE posts SET published_at = ? WHERE id = ?');
     for (const row of legacyDates) {
-      update.run(viennaLocalToUtcIso(row.published_at, 9, 0), row.id);
+      const dateOnly = row.published_at.trim().slice(0, 10);
+      try {
+        update.run(viennaLocalToUtcIso(dateOnly, 9, 0), row.id);
+      } catch {
+        update.run(`${dateOnly}T07:00:00.000Z`, row.id);
+      }
     }
   }
+
+  connection.exec(
+    'CREATE INDEX IF NOT EXISTS idx_posts_status_published ON posts(status, published_at)',
+  );
 };
 
 /**
