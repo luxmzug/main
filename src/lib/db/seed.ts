@@ -65,7 +65,9 @@ export const seedIfEmpty = (db: AppDb) => {
         coverAlt: null,
         showCoverOnDetail: false,
         schemaJson: null,
+        status: 'published',
         publishedAt: date,
+        queuePosition: null,
         createdAt: now,
         updatedAt: now,
       })

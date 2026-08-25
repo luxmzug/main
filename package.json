@@ -6,6 +6,7 @@
     "build": "next build",
     "start": "next start -p 2009",
     "check:types": "tsc --noEmit --pretty",
+    "schedule:posts": "npx tsx --tsconfig tsconfig.json scripts/schedule-existing-posts.ts",
     "clean": "rimraf .next out data/*.db public/uploads/*"
   },
   "dependencies": {

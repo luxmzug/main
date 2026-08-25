@@ -1,6 +1,9 @@
-import { asc, desc, eq } from 'drizzle-orm';
+import { and, asc, desc, eq } from 'drizzle-orm';
+import type { PostStatus } from '@/lib/post-status';
 import { getDb } from '@/lib/db';
 import { categories, posts } from '@/lib/db/schema';
+import { isPubliclyVisible, releaseDueScheduledPosts } from '@/lib/publish-queue';
+import { normalizePublishedAt } from '@/lib/vienna-time';
 import { slugify } from '@/lib/slug';
 
 export type PostFrontmatter = {
@@ -38,7 +41,9 @@ export type PostRecord = {
   coverAlt: string | null;
   showCoverOnDetail: boolean;
   schemaJson: string | null;
+  status: PostStatus;
   publishedAt: string;
+  queuePosition: number | null;
   createdAt: string;
   updatedAt: string;
 };
@@ -78,20 +83,23 @@ const mapRecord = (row: {
     coverAlt: row.posts.coverAlt,
     showCoverOnDetail: row.posts.showCoverOnDetail,
     schemaJson: row.posts.schemaJson,
+    status: row.posts.status as PostStatus,
     publishedAt: row.posts.publishedAt,
+    queuePosition: row.posts.queuePosition,
     createdAt: row.posts.createdAt,
     updatedAt: row.posts.updatedAt,
   };
 };
 
 /**
- * Returns all posts, newest first.
+ * Returns published posts visible on the public site, newest first.
  */
 export const getAllPosts = (): Post[] => {
   const rows = getDb()
     .select()
     .from(posts)
     .innerJoin(categories, eq(posts.categoryId, categories.id))
+    .where(isPubliclyVisible())
     .orderBy(desc(posts.publishedAt))
     .all();
 
@@ -99,14 +107,14 @@ export const getAllPosts = (): Post[] => {
 };
 
 /**
- * Loads a single post by slug.
+ * Loads a single published post by slug.
  */
 export const getPostBySlug = (slug: string): Post | undefined => {
   const row = getDb()
     .select()
     .from(posts)
     .innerJoin(categories, eq(posts.categoryId, categories.id))
-    .where(eq(posts.slug, slug))
+    .where(and(eq(posts.slug, slug), isPubliclyVisible()))
     .get();
 
   return row ? mapPost(row) : undefined;
@@ -126,15 +134,38 @@ export const getPostById = (id: number): PostRecord | undefined => {
   return row ? mapRecord(row) : undefined;
 };
 
+export type AdminPostFilter = 'all' | PostStatus;
+
 /**
- * Returns every post row for the admin list.
+ * Returns every post row for the admin list, optionally filtered by status.
  */
-export const listAdminPosts = (): PostRecord[] => {
+export const listAdminPosts = (filter: AdminPostFilter = 'all'): PostRecord[] => {
+  releaseDueScheduledPosts();
+
+  const query = getDb()
+    .select()
+    .from(posts)
+    .innerJoin(categories, eq(posts.categoryId, categories.id))
+    .orderBy(desc(posts.updatedAt));
+
+  const rows =
+    filter === 'all'
+      ? query.all()
+      : query.where(eq(posts.status, filter)).all();
+
+  return rows.map(mapRecord);
+};
+
+/**
+ * Returns scheduled posts for the admin queue view.
+ */
+export const listAdminQueuePosts = (): PostRecord[] => {
   const rows = getDb()
     .select()
     .from(posts)
     .innerJoin(categories, eq(posts.categoryId, categories.id))
-    .orderBy(desc(posts.updatedAt))
+    .where(eq(posts.status, 'scheduled'))
+    .orderBy(asc(posts.publishedAt))
     .all();
 
   return rows.map(mapRecord);
@@ -155,7 +186,7 @@ export type InternalLinkPost = {
 };
 
 /**
- * Returns compact post rows for the internal-link picker.
+ * Returns published posts for the internal-link picker.
  */
 export const listInternalLinkPosts = (): InternalLinkPost[] => {
   return getDb()
@@ -167,7 +198,8 @@ export const listInternalLinkPosts = (): InternalLinkPost[] => {
     })
     .from(posts)
     .innerJoin(categories, eq(posts.categoryId, categories.id))
-    .orderBy(desc(posts.updatedAt))
+    .where(isPubliclyVisible())
+    .orderBy(desc(posts.publishedAt))
     .all();
 };
 
@@ -214,11 +246,13 @@ export type UpsertPostInput = {
   coverAlt: string | null;
   showCoverOnDetail: boolean;
   schemaJson: string | null;
+  status: PostStatus;
   publishedAt: string;
+  queuePosition?: number | null;
 };
 
 /**
- * Inserts a published post.
+ * Inserts a post row.
  */
 export const createPost = (input: UpsertPostInput) => {
   const now = new Date().toISOString();
@@ -226,6 +260,8 @@ export const createPost = (input: UpsertPostInput) => {
     .insert(posts)
     .values({
       ...input,
+      publishedAt: normalizePublishedAt(input.publishedAt),
+      queuePosition: input.queuePosition ?? null,
       createdAt: now,
       updatedAt: now,
     })
@@ -241,6 +277,8 @@ export const updatePost = (id: number, input: UpsertPostInput) => {
     .update(posts)
     .set({
       ...input,
+      publishedAt: normalizePublishedAt(input.publishedAt),
+      queuePosition: input.queuePosition ?? null,
       updatedAt: new Date().toISOString(),
     })
     .where(eq(posts.id, id))
@@ -264,4 +302,15 @@ export const slugTaken = (slug: string, exceptId?: number) => {
     return false;
   }
   return exceptId === undefined ? true : row.id !== exceptId;
+};
+
+/**
+ * Returns all post ids and slugs for migration scripts.
+ */
+export const listAllPostIds = () => {
+  return getDb()
+    .select({ id: posts.id, slug: posts.slug, title: posts.title, status: posts.status })
+    .from(posts)
+    .orderBy(asc(posts.id))
+    .all();
 };

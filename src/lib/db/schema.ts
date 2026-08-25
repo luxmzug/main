@@ -21,6 +21,8 @@ export const posts = sqliteTable('posts', {
   showCoverOnDetail: integer('show_cover_on_detail', { mode: 'boolean' }).notNull().default(false),
   schemaJson: text('schema_json'),
   publishedAt: text('published_at').notNull(),
+  status: text('status').notNull().default('published'),
+  queuePosition: integer('queue_position'),
   createdAt: text('created_at').notNull(),
   updatedAt: text('updated_at').notNull(),
 });

@@ -84,9 +84,9 @@ const acrostic: {
 ];
 
 const trustIcons: { label: string; Icon: LucideIcon }[] = [
-  { label: 'Premium Umzugsservice', Icon: Diamond },
-  { label: 'Sicherer Transport', Icon: ShieldCheck },
-  { label: 'Zuverlässig & pünktlich', Icon: Truck },
+  { label: 'Premium-Umzüge verstehen', Icon: Diamond },
+  { label: 'Sicher transportieren', Icon: ShieldCheck },
+  { label: 'Zeitplanung & Organisation', Icon: Truck },
   { label: 'Stressfrei ankommen', Icon: Heart },
 ];
 
@@ -115,44 +115,42 @@ export const AcrosticSection = () => {
             ))}
           </ul>
 
-          <div className="space-y-6">
-            <div className="relative overflow-hidden rounded-2xl shadow-[var(--shadow-card)]">
-              <img
-                alt="Sorgfältiger Möbeltransport durch ein professionelles Team"
-                className="aspect-[4/5] w-full object-cover"
-                height={900}
-                loading="lazy"
-                src="/images/service-packen.jpg"
-                width={720}
-              />
-              <div className="absolute inset-x-4 bottom-4 rounded-xl bg-gold px-4 py-4 text-center text-navy shadow-lg md:inset-x-6">
-                <p className="text-lg font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
-                  Sicher. Gepflegt. Stressfrei umziehen.
-                </p>
-                <p className="mt-1 tracking-widest text-navy/80" aria-label="5 von 5 Sternen">
-                  ★ ★ ★ ★ ★
-                </p>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              {trustIcons.map((item) => (
-                <div
-                  className="rounded-xl border border-navy/8 bg-white/70 p-4 text-center"
-                  key={item.label}
-                >
-                  <item.Icon
-                    aria-hidden="true"
-                    className="mx-auto size-6 text-[#d4af37]"
-                    strokeWidth={1.75}
-                  />
-                  <p className="mt-2 text-xs font-semibold tracking-wide text-navy uppercase md:text-[13px]">
-                    {item.label}
-                  </p>
-                </div>
-              ))}
+          <div className="relative overflow-hidden rounded-2xl shadow-[var(--shadow-card)]">
+            <img
+              alt="Sorgfältiger Möbeltransport durch ein professionelles Team"
+              className="aspect-[4/5] w-full object-cover"
+              height={900}
+              loading="lazy"
+              src="/images/service-packen.jpg"
+              width={720}
+            />
+            <div className="absolute inset-x-4 bottom-4 rounded-xl bg-gold px-4 py-4 text-center text-navy shadow-lg md:inset-x-6">
+              <p className="text-lg font-semibold" style={{ fontFamily: 'var(--font-display)' }}>
+                Sicher. Gepflegt. Stressfrei umziehen.
+              </p>
+              <p className="mt-1 tracking-widest text-navy/80" aria-label="5 von 5 Sternen">
+                ★ ★ ★ ★ ★
+              </p>
             </div>
           </div>
+        </div>
+
+        <div className="mt-10 grid grid-cols-2 gap-4 md:mt-12 md:grid-cols-4">
+          {trustIcons.map((item) => (
+            <div
+              className="rounded-xl border border-navy/8 bg-white/70 p-4 text-center md:p-5"
+              key={item.label}
+            >
+              <item.Icon
+                aria-hidden="true"
+                className="mx-auto size-6 text-[#d4af37] md:size-7"
+                strokeWidth={1.75}
+              />
+              <p className="mt-2 text-xs font-semibold tracking-wide text-navy uppercase md:text-[13px]">
+                {item.label}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </section>

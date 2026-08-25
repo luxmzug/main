@@ -14,7 +14,7 @@ export const POST = async (request: Request) => {
   try {
     const { session } = await requireAdminApi(request);
     const form = await request.formData();
-    const input = await parsePostForm(form, { coverRequired: true });
+    const input = await parsePostForm(form, { coverRequired: true, isNew: true });
 
     if (slugTaken(input.slug)) {
       throw new AdminHttpError('Dieser Slug ist bereits vergeben.', 409);

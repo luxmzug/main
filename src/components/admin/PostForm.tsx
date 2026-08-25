@@ -6,6 +6,8 @@ import { RichTextEditor } from '@/components/admin/RichTextEditor';
 import { COVER_MAX_MB, COVER_RECOMMENDED_KB, coverImageError } from '@/lib/cover-image';
 import type { Category, InternalLinkPost, PostRecord } from '@/lib/posts';
 import { slugify } from '@/lib/slug';
+import type { PostStatus } from '@/lib/post-status';
+import { toDateTimeLocalVienna } from '@/lib/vienna-time';
 
 export const PostForm = (props: {
   post?: PostRecord;
@@ -28,6 +30,11 @@ export const PostForm = (props: {
   const [publishedAt, setPublishedAt] = useState(
     props.post?.publishedAt.slice(0, 10) ?? new Date().toISOString().slice(0, 10),
   );
+  const [publishedAtTime, setPublishedAtTime] = useState(
+    props.post ? toDateTimeLocalVienna(props.post.publishedAt).split('T')[1] ?? '09:00' : '09:00',
+  );
+  const [publishMode, setPublishMode] = useState<'auto' | 'manual'>(isNew ? 'auto' : 'manual');
+  const [status, setStatus] = useState<PostStatus>(props.post?.status ?? 'scheduled');
   const [error, setError] = useState('');
   const [pending, setPending] = useState(false);
   const [showCoverOnDetail, setShowCoverOnDetail] = useState(props.post?.showCoverOnDetail ?? true);
@@ -69,7 +76,10 @@ export const PostForm = (props: {
         body.set('description', description);
         body.set('content', content);
         body.set('categoryId', categoryId);
+        body.set('publishMode', publishMode);
+        body.set('status', status);
         body.set('publishedAt', publishedAt);
+        body.set('publishedAtTime', publishedAtTime);
         body.set('schemaJson', schemaJson);
         body.set('showCoverOnDetail', showCoverOnDetail ? '1' : '0');
         body.set('coverAlt', coverAlt);
@@ -260,17 +270,77 @@ export const PostForm = (props: {
         )}
       </div>
 
-      <label className="block">
-        <span className="admin-label">Veröffentlichungsdatum</span>
-        <input
-          className="admin-input max-w-xs"
-          name="publishedAt"
-          onChange={(event) => setPublishedAt(event.target.value)}
-          required
-          type="date"
-          value={publishedAt}
-        />
-      </label>
+      <div className="rounded-xl border border-navy/10 bg-cream/50 p-4">
+        <span className="admin-label">Veröffentlichung</span>
+        {isNew ? (
+          <div className="mt-2 flex flex-wrap gap-3">
+            <label className="flex items-center gap-2 text-sm text-navy">
+              <input
+                checked={publishMode === 'auto'}
+                name="publishMode"
+                onChange={() => setPublishMode('auto')}
+                type="radio"
+                value="auto"
+              />
+              Automatisch in Warteschlange (7/Tag)
+            </label>
+            <label className="flex items-center gap-2 text-sm text-navy">
+              <input
+                checked={publishMode === 'manual'}
+                name="publishMode"
+                onChange={() => setPublishMode('manual')}
+                type="radio"
+                value="manual"
+              />
+              Manuelles Datum / Status
+            </label>
+          </div>
+        ) : (
+          <input name="publishMode" type="hidden" value="manual" />
+        )}
+
+        {isNew && publishMode === 'auto' ? (
+          <p className="mt-3 text-sm text-muted">
+            Der Beitrag wird automatisch in die Veröffentlichungs-Warteschlange eingereiht.
+          </p>
+        ) : (
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <label className="block">
+              <span className="admin-label">Status</span>
+              <select
+                className="admin-input"
+                name="status"
+                onChange={(event) => setStatus(event.target.value as PostStatus)}
+                value={status}
+              >
+                <option value="draft">Entwurf</option>
+                <option value="scheduled">Geplant</option>
+                <option value="published">Veröffentlicht</option>
+              </select>
+            </label>
+            <label className="block">
+              <span className="admin-label">Datum</span>
+              <input
+                className="admin-input"
+                name="publishedAt"
+                onChange={(event) => setPublishedAt(event.target.value)}
+                type="date"
+                value={publishedAt}
+              />
+            </label>
+            <label className="block">
+              <span className="admin-label">Uhrzeit (Wien)</span>
+              <input
+                className="admin-input"
+                name="publishedAtTime"
+                onChange={(event) => setPublishedAtTime(event.target.value)}
+                type="time"
+                value={publishedAtTime}
+              />
+            </label>
+          </div>
+        )}
+      </div>
 
       <div>
         <span className="admin-label">Inhalt (HTML)</span>

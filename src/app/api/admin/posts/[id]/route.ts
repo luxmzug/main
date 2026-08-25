@@ -33,7 +33,7 @@ export const PUT = async (request: Request, props: RouteProps) => {
     }
 
     const form = await request.formData();
-    const input = await parsePostForm(form, { coverRequired: false });
+    const input = await parsePostForm(form, { coverRequired: false, isNew: false });
     if (slugTaken(input.slug, id)) {
       throw new AdminHttpError('Dieser Slug ist bereits vergeben.', 409);
     }
