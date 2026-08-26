@@ -34,12 +34,15 @@ export default function ImpressumPage() {
           '@type': 'Person',
           name: siteConfig.ownerName,
           email: siteConfig.email,
+          telephone: siteConfig.phone,
           url: `${siteConfig.url}/impressum/`,
           jobTitle: 'Medieninhaber',
           address: {
             '@type': 'PostalAddress',
-            addressLocality: siteConfig.city,
-            addressCountry: 'AT',
+            streetAddress: siteConfig.streetAddress,
+            postalCode: siteConfig.postalCode,
+            addressLocality: siteConfig.addressLocality,
+            addressCountry: siteConfig.country,
           },
         }}
       />
@@ -61,7 +64,9 @@ export default function ImpressumPage() {
             <p className="mt-3 text-navy">
               Nuran Duman
               <br />
-              Wien, Österreich
+              Adresse: {siteConfig.streetAddress}, {siteConfig.postalCode} {siteConfig.addressLocality}
+              <br />
+              Telnr: {siteConfig.phoneCompact}
               <br />
               E-Mail:{' '}
               <a className="underline underline-offset-4 hover:text-gold-dark" href={`mailto:${siteConfig.email}`}>

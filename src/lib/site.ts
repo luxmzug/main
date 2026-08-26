@@ -13,6 +13,11 @@ export const siteConfig = {
   country: 'AT',
   ownerName: 'Nuran Duman',
   email: 'info@luxusumzug.at',
+  phone: '+43 660 871 77 20',
+  phoneCompact: '+43660 871 77 20',
+  streetAddress: 'Dr. Karl-Swoboda-Str. 25',
+  postalCode: '2486',
+  addressLocality: 'Pottendorf',
   ogImage: '/images/og-cover.jpg',
   twitterHandle: '@luxusumzug',
   keywords: [

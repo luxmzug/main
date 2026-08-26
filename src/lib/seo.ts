@@ -79,8 +79,22 @@ export const buildOrganizationJsonLd = () => {
     alternateName: siteConfig.legalName,
     url: siteConfig.url,
     email: siteConfig.email,
+    telephone: siteConfig.phone,
     description:
       'Redaktionelles Informationsangebot zu hochwertigen Umzügen in Wien und Österreich. Kein Gewerbe, keine Umzugsdienstleistung.',
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: siteConfig.streetAddress,
+      postalCode: siteConfig.postalCode,
+      addressLocality: siteConfig.addressLocality,
+      addressCountry: siteConfig.country,
+    },
+    founder: {
+      '@type': 'Person',
+      name: siteConfig.ownerName,
+      email: siteConfig.email,
+      telephone: siteConfig.phone,
+    },
     areaServed: [
       { '@type': 'City', name: 'Wien', addressCountry: 'AT' },
       { '@type': 'Country', name: 'Österreich' },
@@ -97,6 +111,8 @@ export const buildOrganizationJsonLd = () => {
       '@type': 'ContactPoint',
       contactType: 'editorial',
       email: siteConfig.email,
+      telephone: siteConfig.phone,
+      areaServed: 'AT',
       availableLanguage: ['de-AT', 'German'],
     },
   };
