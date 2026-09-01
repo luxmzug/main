@@ -106,6 +106,16 @@ export const getAllPosts = (): Post[] => {
   return rows.map(mapPost);
 };
 
+/** Maximum number of posts teased on the homepage. */
+export const HOME_LATEST_POST_LIMIT = 8;
+
+/**
+ * Returns the newest published posts for homepage teasers.
+ */
+export const getLatestPosts = (limit = HOME_LATEST_POST_LIMIT): Post[] => {
+  return getAllPosts().slice(0, limit);
+};
+
 /**
  * Loads a single published post by slug.
  */

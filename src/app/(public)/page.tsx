@@ -5,7 +5,7 @@ import { HomeHero } from '@/components/HomeHero';
 import { JsonLd } from '@/components/JsonLd';
 import { PostCard } from '@/components/PostCard';
 import { SectionHeading } from '@/components/SectionHeading';
-import { getAllPosts } from '@/lib/posts';
+import { getLatestPosts } from '@/lib/posts';
 import { buildFaqJsonLd, buildHomeJsonLd } from '@/lib/seo';
 import { siteConfig } from '@/lib/site';
 
@@ -53,11 +53,11 @@ const homeFaqs = [
 ] as const;
 
 export default function HomePage() {
-  const posts = getAllPosts();
+  const latestPosts = getLatestPosts();
 
   return (
     <>
-      <JsonLd data={buildHomeJsonLd(posts)} />
+      <JsonLd data={buildHomeJsonLd(latestPosts)} />
       <JsonLd data={buildFaqJsonLd([...homeFaqs])} />
 
       <HomeHero />
@@ -90,11 +90,11 @@ export default function HomePage() {
       <section className="bg-cream-dark/50 px-4 py-16 md:px-6 md:py-24 lg:px-8" id="ratgeber">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
-            subtitle="Praxisnahe Leitfäden für Planung, Schutz und einen ruhigen Ablauf Ihres Umzugs."
+            subtitle="Die acht aktuellsten Leitfäden – alle Beiträge im Ratgeber-Index."
             title="Unsere neuesten Ratgeber-Beiträge"
           />
           <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {posts.map((post) => (
+            {latestPosts.map((post) => (
               <PostCard key={post.slug} post={post} />
             ))}
           </div>
