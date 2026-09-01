@@ -63,6 +63,30 @@ export default function HomePage() {
       <HomeHero />
       <AcrosticSection />
 
+      <section className="border-t border-navy/10 bg-cream px-4 py-14 md:px-6 md:py-16 lg:px-8">
+        <div className="mx-auto max-w-3xl">
+          <h2
+            className="text-center text-2xl text-navy md:text-3xl"
+            style={{ fontFamily: 'var(--font-display)' }}
+          >
+            Entrümpelung als Vorbereitung für den Umzug
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-muted md:text-lg">
+            Wer in Wien umzieht, profitiert oft von einem klaren Start: Bestandsaufnahme, Sortieren und
+            gezieltes Ausmisten vor dem Transport. Eine professionelle{' '}
+            <a
+              className="font-medium text-navy underline decoration-gold/60 underline-offset-4 transition hover:text-gold-dark"
+              href="https://sofortentrumpelung.at/leistungen/wohnungsentruempelung"
+            >
+              Wohnungsentrumpelung Wien
+            </a>{' '}
+            reduziert Volumen und Kosten, erleichtert die Übergabe der alten Wohnung und schafft Ruhe für
+            die eigentliche Übersiedlung. Planen Sie Entrümpelung und Umzugstermin deshalb frühzeitig
+            gemeinsam – so bleibt der Ablauf strukturiert und stressarm.
+          </p>
+        </div>
+      </section>
+
       <section className="bg-cream-dark/50 px-4 py-16 md:px-6 md:py-24 lg:px-8" id="ratgeber">
         <div className="mx-auto max-w-7xl">
           <SectionHeading
